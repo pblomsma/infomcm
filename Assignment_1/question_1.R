@@ -1,4 +1,4 @@
-COG_DATA = read.csv("C:\\Projects\\COG\\git\\Assignment_1\\datakeyPressDataWithLaneDeviation.csv", sep=",")
+COG_DATA = read.csv("data\\keyPressDataWithLaneDeviation.csv", sep=",")
 
 #question 1 A
 #Create subsets
@@ -85,5 +85,5 @@ lines(df$phoneNrLengthAfterKeyPress, df$lanePosition, type="o", pch=22, lty=2, c
 arrows(df$phoneNrLengthAfterKeyPress,df$lanePosition - df$lanePosition.se,df$phoneNrLengthAfterKeyPress,df$lanePosition + df$lanePosition.se, angle=90, code=3, col = "red", length = 0.05)
 
 # Create labels and legend
-legend(1, g_range[2], c("Dialing focus","Steering focus"), cex=0.8, 
-       col=c("blue","red"), pch=21:22, lty=1:2)
+legend(1, g_range[2], c("Steering focus", "Dialing focus"), cex=0.8, 
+       col=c("blue", "red"), pch=21:22, lty=1:2)
