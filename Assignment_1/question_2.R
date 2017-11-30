@@ -31,5 +31,25 @@ hist(simdata$xpos,col = "grey", main = "Histogram of car position in simulated d
 hist(subset1518_nabs$posX, col = "grey",main = "Histogram of car position in human trials",  xlab = "Car Position", ylab = "Frequency")
 # Question D
 sd(simdata$xpos)
+#Answer = 0.732734
+
 sd(subset1518_nabs$posX)
+#Answer = 0.3602139
+
 # Question E
+sd_results <- data.frame(sd.input = double(), sd.output = double())
+for (sd in seq(0.05, 0.07, 0.0001))
+{
+  simdata <- data.frame(trial = integer(),timetrial=integer(),xpos=double())
+  for (trial in 1:500) { 
+    
+    distrution<- rnorm(61 , 0 , sd)
+    sum <- 0
+    for (x in 1:61) 
+    {
+      sum <-  sum + distrution[x]
+      simdata [nrow(simdata)+1,] = list(trial,(x-1)*50,sum)
+    }
+  }
+  sd_results [nrow(sd_results)+1,] = list(sd,sd(simdata$xpos))
+}
