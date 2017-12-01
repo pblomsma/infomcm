@@ -78,7 +78,6 @@ analysisOfHumanData <- function()
 
 
 
-
 ##new function
 runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStringLength,phoneNumber)   #### strategy stores where participant interleaves
 {
@@ -179,8 +178,6 @@ runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStr
 
 runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 {
-	
-	
 	normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
 	phoneStringLength <- 11   ### how many digits does the number have?
 	
@@ -273,7 +270,7 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 	
 	
 	#### make a plot that visualizes all the strategies: note that trial time is divided by 1000 to get the time in seconds
-	with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log="x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)"))
+	with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log="x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)", main =paste0("Result of runAllSimpleStrategies with ", as.character(nrSimulations) , " simulation(s) (", as.character(nrow(tableAllSamples)) ,  " datapoints)")))
 	
 	
 	### give a summary of the data	
@@ -282,14 +279,6 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 }
 
 
-
-
-
-
-
-
-
-	
 ### function that generates the points at which car data should be collected (specifically: if you know that a keypress happens after a specific time, then find out at what points a drift update occurs, this depends on the ength of "timeStepPerDriftUpdate" (50 msec by default))	
 updateTimestampslist <- function(timestampsList, totalTime)
 {
