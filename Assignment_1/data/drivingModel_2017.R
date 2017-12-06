@@ -171,14 +171,59 @@ runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStr
 }
 
 
+runAllComplexStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructure)
+{
+  
+  #come up with all possible structures
+  normalPhoneStructure <- c()
+  
+  normalPhoneStructure <- c(1)
+  normalPhoneStructure <- c(2)
+  
+  
+  
+  normalPhoneStructure <- c(1,6)  
+  
+  runAllSimpleStrategies(nrSimulations,phoneNumber, normalPhoneStructure)
+  
+}  
 
+#partly the answer to question 5
+runAllComplexStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructure)
+{
+  all_chunk_configurations <- list(c(), c(1))
+  
+  for (chunknum in 2:10)
+  {
+    temp_list = list()
+    
+    for(i in 1:length(all_chunk_configurations))
+    {
+      current <- all_chunk_configurations[[i]]
+  
+      temp_list[[length(temp_list)+1]] <- c(current, chunknum)
+      print(temp_list[[length(temp_list)]])
+    }
+    
+    all_chunk_configurations <- c(all_chunk_configurations, temp_list)
+  }
+  
+  for(i in 1:length(all_chunk_configurations))
+  {
+    currentPhoneStructure <- all_chunk_configurations[[i]]
+    print(i)
+    runAllSimpleStrategies(50,phoneNumber, currentPhoneStructure)
+  }
+}  
 
 
 #### Main function to run the code. For example: runAllSimpleStrategies(5,"07854325698") will run 5 simulations for each (simple) strategy on the phone number to the right. The default assumption is that the chunk boundary is between the 5th and 6th digit
 
-runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
+
+runAllSimpleStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructure)
 {
-	normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
+	#normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
+	# 0-78543-25698
 	phoneStringLength <- 11   ### how many digits does the number have?
 	
 
