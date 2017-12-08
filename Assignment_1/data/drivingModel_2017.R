@@ -175,7 +175,7 @@ runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStr
 runAllComplexStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructure)
 {
   all_chunk_configurations <- list(c(), c(1))
-  mean_per_phonestructure <- data.frame(dummy = double(), mean = double())
+  mean_per_phonestructure <- data.frame(i = double(), mean = double())
   for (chunknum in 2:10)
   {
     temp_list = list()
@@ -195,8 +195,8 @@ runAllComplexStrategies <- function(nrSimulations,phoneNumber, normalPhoneStruct
   {
     currentPhoneStructure <- all_chunk_configurations[[i]]
     print(i)
-    runAllSimpleStrategies(1,phoneNumber, currentPhoneStructure)
     
+    mean_per_phonestructure[nrow(mean_per_phonestructure)+1,]  <- list(i, runAllSimpleStrategies(1,phoneNumber, currentPhoneStructure))
   }
 }  
 
@@ -303,8 +303,7 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructu
 	### give a summary of the data	
 	summary(agrResultsMeanDrift$TrialTime)
 	print(mean(agrResultsMeanDrift$TrialTime))
-	mean_per_phonestructure [nrow(mean_per_phonestructure)+1,] =  list(0, mean(agrResultsMeanDrift$TrialTime))
-
+  return(mean(agrResultsMeanDrift$x))
 }
 
 
