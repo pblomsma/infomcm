@@ -9,7 +9,7 @@
 
 
 require(gtools)
-
+#library(metrics)
 
 
 
@@ -207,12 +207,13 @@ runAllComplexStrategies <- function(nrSimulations,phoneNumber, normalPhoneStruct
     
     all_chunk_configurations <- c(all_chunk_configurations, temp_list)
   }
-  
+  mean_per_phonestructure <- data.frame(mean = double())
   for(i in 1:length(all_chunk_configurations))
   {
     currentPhoneStructure <- all_chunk_configurations[[i]]
     print(i)
     runAllSimpleStrategies(50,phoneNumber, currentPhoneStructure)
+    
   }
 }  
 
@@ -320,6 +321,7 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructu
 	
 	### give a summary of the data	
 	summary(agrResultsMeanDrift$TrialTime)
+	mean_per_phonestructure$mean<-mean(agrResultsMeanDrift$TrialTime)
 
 }
 
