@@ -303,13 +303,13 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
   points(agrResultsMeanDriftonly56$TrialTime/1000,abs(agrResultsMeanDriftonly56$dev),col="red",bg="red",pch =21)
   ### plotinf the mean of the human data
   points(mean(sf$timeRelativeToTrialStart/1000),mean(sf$lanePosition), col="green",pch=22, ylim = g_range,bg="green")
-  arrows(mean(sf$timeRelativeToTrialStart/1000),mean(sf$lanePosition) - sf$lanePosition.se,mean(sf$timeRelativeToTrialStart/1000),mean(sf$lanePosition) + sf$lanePosition.se, angle=90,code=3, col = "green", length = 0.05)
+  arrows(mean(sf$timeRelativeToTrialStart/1000),mean(sf$lanePosition) - sf$lanePosition.se,mean(sf$timeRelativeToTrialStart/1000),mean(sf$lanePosition) + sf$lanePosition.se, angle=90,code=3, col = "green", length = 0.1)
   points(mean(df$timeRelativeToTrialStart/1000),mean(df$lanePosition), col="blue",pch=23, ylim = g_range, bg="blue")
-  
+  arrows(mean(df$timeRelativeToTrialStart/1000),mean(df$lanePosition) - df$lanePosition.se,mean(df$timeRelativeToTrialStart/1000),mean(df$lanePosition) + df$lanePosition.se, angle=90,code=3, col = "blue", length = 0.1)
   ### labels
   legend(12, 3, c("Interleave between the 5th and 6th digit","Steering focus", "Dialing focus"), cex=0.8, 
          col=c("red","green", "blue"), pch=21:23, lty=1:2)
-  
+  #y
   ### give a summary of the data	
   summary(agrResultsMeanDrift$TrialTime)
 }
