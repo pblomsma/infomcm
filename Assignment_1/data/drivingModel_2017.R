@@ -205,7 +205,7 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
 {
   #Create all possible strategies
   all_chunk_configurations <- list(c(), c(1))
-  nrSimulations <- 50
+  nrSimulations <- 1
   mean_per_phonestructure <- data.frame(i = double(), mean = double())
   for (chunknum in 2:10)
   {
@@ -241,7 +241,6 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
   for(i in 1:length(all_chunk_configurations))
   {
     strategy <- all_chunk_configurations[[i]]
-    
     locSteerTimeOptions <- steeringTimeOptions
     if (length(strategy) == 0)
     {
@@ -261,12 +260,11 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
         
         ##only look at rows where there is a keypress
         locTab <- locTab[locTab$events == "keypress",]
-        
         ### add the relevant data points to variables that are stored in a final table
         keypresses <- c(keypresses,1:nrow(locTab))
         times <- c(times,locTab$times)
         deviations <- c(deviations,locTab$drifts)
-        strats <- c(strats,rep(nrDigitsPerTime,nrow(locTab)))
+        strats <- c(strats,rep(toString(strategy),nrow(locTab)))
         steers <- c(steers,rep(steerTimes,nrow(locTab)))
         
       }
@@ -277,7 +275,6 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
   
   ### now make a new table based on all the data that was collected
   tableAllSamples <- data.frame(keypresses,times,deviations,strats,steers)
-  
   
   #### In the table we collected data for multiple simulations per strategy. Now we want to know the average performane of each strategy.
   #### These aspects are calculated using the "aggregate" function
@@ -298,11 +295,20 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
   
   ### and mean trial time
   agrResultsMeanDrift$TrialTime <-  with(agrResults[agrResults$keypresses ==11,],aggregate(times,list( strats= strats, steers= steers),mean))$x	
-  
+  agrResultsMeanDriftonly56 <- agrResultsMeanDrift[agrResultsMeanDrift$strats=="5, 6", ]
   
   #### make a plot that visualizes all the strategies: note that trial time is divided by 1000 to get the time in seconds
-  with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log="x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)", main =paste0("Result of runAllSimpleStrategies with ", as.character(nrSimulations) , " simulation(s) (", as.character(nrow(tableAllSamples)) ,  " datapoints)")))
-  
+  with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log="x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)", main =paste0("Result of runAllComplexStrategies with ", as.character(nrSimulations) , " simulation(s) (", as.character(nrow(tableAllSamples)) ,  " datapoints)")))
+  ### plot of only the 5 and 6 interliving
+  points(agrResultsMeanDriftonly56$TrialTime/1000,abs(agrResultsMeanDriftonly56$dev),col="red",bg="red",pch =21)
+  ### plotinf the mean of the human data
+  points(mean(sf$timeRelativeToTrialStart/1000),mean(sf$lanePosition), col="green",pch=22, ylim = g_range,bg="green")
+  arrows(mean(sf$timeRelativeToTrialStart)/1000,mean(sf$lanePosition),sf$lanePosition - sf$lanePosition.se,sf$lanePosition + sf$lanePosition.se, angle=90,code=3, col = "green", length = 0.1)
+  points(mean(df$timeRelativeToTrialStart/1000),mean(df$lanePosition), col="blue",pch=23, ylim = g_range, bg="blue")
+  arrows(mean(df$timeRelativeToTrialStart)/1000,mean(df$lanePosition),mean(df$lanePosition)+df$lanePosition.se, mean(df$lanePosition)-df$lanePosition.se, angle=90,code=3, col = "blue", length = 0.1)
+  ### labels
+  legend(12, 3, c("Interleave between the 5th and 6th digit","Steering focus", "Dialing focus"), cex=0.8, 
+         col=c("red","green", "blue"), pch=21:23, lty=1:2)
   
   ### give a summary of the data	
   summary(agrResultsMeanDrift$TrialTime)
