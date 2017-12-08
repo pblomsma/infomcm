@@ -32,7 +32,35 @@ hist(subset1518_nabs$posX, col = "grey",main = "Histogram of car position in emp
 # Question D
 sd(simdata$xpos)
 sd(subset1518_nabs$posX)
+
 # Question E
+
+sd_results <- data.frame(sd.input = double(), sd.output = double())
+for (sd in seq(0.05, 0.07, 0.0001))
+{
+  simdata <- data.frame(trial = integer(),timetrial=integer(),xpos=double())
+  for (trial in 1:50) { 
+    
+    distrution<- rnorm(61 , 0 , sd)
+    sum <- 0
+    for (x in 1:61) 
+    {
+      sum <-  sum + distrution[x]
+      simdata [nrow(simdata)+1,] = list(trial,(x-1)*50,sum)
+    }
+  }
+  sd_results [nrow(sd_results)+1,] = list(sd,sd(simdata$xpos))
+}
+
+
+
+
+
+
+
+
+
+
 simdata2 <- data.frame(trial = integer(),timetrial=integer(),xpos=double())
 for (trial in 1:20) { 
   
