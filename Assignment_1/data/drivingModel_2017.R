@@ -200,11 +200,122 @@ runAllComplexStrategies <- function(nrSimulations,phoneNumber, normalPhoneStruct
   }
 }  
 
+#### Main function to run the code. For example: runAllSimpleStrategies(5,"07854325698") will run 5 simulations for each (simple) strategy on the phone number to the right. The default assumption is that the chunk boundary is between the 5th and 6th digit
+runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
+{
+  #Create all possible strategies
+  all_chunk_configurations <- list(c(), c(1))
+  nrSimulations <- 50
+  mean_per_phonestructure <- data.frame(i = double(), mean = double())
+  for (chunknum in 2:10)
+  {
+    temp_list = list()
+    
+    for(i in 1:length(all_chunk_configurations))
+    {
+      current <- all_chunk_configurations[[i]]
+      
+      temp_list[[length(temp_list)+1]] <- c(current, chunknum)
+      print(temp_list[[length(temp_list)]])
+    }
+    
+    all_chunk_configurations <- c(all_chunk_configurations, temp_list)
+  }
+  
+  #
+  
+  normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
+  # 0-78543-25698
+  phoneStringLength <- 11   ### how many digits does the number have?
+  
+  
+  ### vectors that will contain output of the simulation. These are later used to create 1 table with all values
+  keypresses <- c()
+  times <- c()
+  deviations <- c()
+  strats <- c()
+  steers <- c()	
+  
+  ### iterate through all strategies
+  ## in this simple model we assume that a participant uses a consistent strategy throughout the trial. That is, they only type each time 1 digit, or type 2 digits at a time, or type 3 digits at a time (i.e., all possible ways of 1:phoneStringLength: 1, 2,3,4, ...11)
+  for(i in 1:length(all_chunk_configurations))
+  {
+    strategy <- all_chunk_configurations[[i]]
+    
+    locSteerTimeOptions <- steeringTimeOptions
+    if (length(strategy) == 0)
+    {
+      locSteerTimeOptions <- c(0)
+    }
+    
+    
+    
+    ### now run a trial (runOneTrial) for all combinations of how frequently you update the steering when you are steering (locSteerTimeOptions) and for the nuber of simulations that you want to run for each strategy (nrSimulations)
+    for (steerTimes in locSteerTimeOptions)
+    {
+      for (i in 1:nrSimulations)
+      {
+        
+        ### run the simulation and store the output in a table
+        locTab <- runOneTrial(strategy, steerTimes,normalPhoneStructure,phoneStringLength,phoneNumber)
+        
+        ##only look at rows where there is a keypress
+        locTab <- locTab[locTab$events == "keypress",]
+        
+        ### add the relevant data points to variables that are stored in a final table
+        keypresses <- c(keypresses,1:nrow(locTab))
+        times <- c(times,locTab$times)
+        deviations <- c(deviations,locTab$drifts)
+        strats <- c(strats,rep(nrDigitsPerTime,nrow(locTab)))
+        steers <- c(steers,rep(steerTimes,nrow(locTab)))
+        
+      }
+    }#end of for steerTimes	
+    
+  }##end of for nr strategies
+  
+  
+  ### now make a new table based on all the data that was collected
+  tableAllSamples <- data.frame(keypresses,times,deviations,strats,steers)
+  
+  
+  #### In the table we collected data for multiple simulations per strategy. Now we want to know the average performane of each strategy.
+  #### These aspects are calculated using the "aggregate" function
+  
+  
+  ## calculate average deviation at each keypress (keypresses), for each unique strategy variation (strats and steers)
+  agrResults <- with(tableAllSamples,aggregate(deviations,list(keypresses=keypresses, strats= strats, steers= steers),mean))
+  agrResults$dev <- agrResults$x
+  
+  
+  ### also calculate the time interval
+  agrResults$times <- with(tableAllSamples,aggregate(times,list(keypresses=keypresses, strats= strats, steers= steers),mean))$x
+  
+  
+  ###now calculate mean drift across the trial
+  agrResultsMeanDrift <-  with(agrResults,aggregate(dev,list(strats= strats, steers= steers),mean))
+  agrResultsMeanDrift$dev <- agrResultsMeanDrift$x
+  
+  ### and mean trial time
+  agrResultsMeanDrift$TrialTime <-  with(agrResults[agrResults$keypresses ==11,],aggregate(times,list( strats= strats, steers= steers),mean))$x	
+  
+  
+  #### make a plot that visualizes all the strategies: note that trial time is divided by 1000 to get the time in seconds
+  with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log="x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)", main =paste0("Result of runAllSimpleStrategies with ", as.character(nrSimulations) , " simulation(s) (", as.character(nrow(tableAllSamples)) ,  " datapoints)")))
+  
+  
+  ### give a summary of the data	
+  summary(agrResultsMeanDrift$TrialTime)
+  print(mean(agrResultsMeanDrift$TrialTime))
+  return(mean(agrResultsMeanDrift$x))
+}
+
+
 
 #### Main function to run the code. For example: runAllSimpleStrategies(5,"07854325698") will run 5 simulations for each (simple) strategy on the phone number to the right. The default assumption is that the chunk boundary is between the 5th and 6th digit
-runAllSimpleStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructure)
+runAllSimpleStrategies <- function(nrSimulations,phoneNumber)
 {
-	#normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
+	normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
 	# 0-78543-25698
 	phoneStringLength <- 11   ### how many digits does the number have?
 	
