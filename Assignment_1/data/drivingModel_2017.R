@@ -171,28 +171,11 @@ runOneTrial <- function(strategy,nrSteeringUpdates,normalPhoneStructure,phoneStr
 }
 
 
-runAllComplexStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructure)
-{
-  
-  #come up with all possible structures
-  normalPhoneStructure <- c()
-  
-  normalPhoneStructure <- c(1)
-  normalPhoneStructure <- c(2)
-  
-  
-  
-  normalPhoneStructure <- c(1,6)  
-  
-  runAllSimpleStrategies(nrSimulations,phoneNumber, normalPhoneStructure)
-  
-}  
-
 #partly the answer to question 5
 runAllComplexStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructure)
 {
   all_chunk_configurations <- list(c(), c(1))
-  
+  mean_per_phonestructure <- data.frame(dummy = double(), mean = double())
   for (chunknum in 2:10)
   {
     temp_list = list()
@@ -207,20 +190,18 @@ runAllComplexStrategies <- function(nrSimulations,phoneNumber, normalPhoneStruct
     
     all_chunk_configurations <- c(all_chunk_configurations, temp_list)
   }
-  mean_per_phonestructure <- data.frame(mean = double())
+  
   for(i in 1:length(all_chunk_configurations))
   {
     currentPhoneStructure <- all_chunk_configurations[[i]]
     print(i)
-    runAllSimpleStrategies(50,phoneNumber, currentPhoneStructure)
+    runAllSimpleStrategies(1,phoneNumber, currentPhoneStructure)
     
   }
 }  
 
 
 #### Main function to run the code. For example: runAllSimpleStrategies(5,"07854325698") will run 5 simulations for each (simple) strategy on the phone number to the right. The default assumption is that the chunk boundary is between the 5th and 6th digit
-
-
 runAllSimpleStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructure)
 {
 	#normalPhoneStructure <- c(1,6)  ### indicate at what digit positions a chunk needs to be retrieved (1st and 6th digit)
@@ -321,7 +302,8 @@ runAllSimpleStrategies <- function(nrSimulations,phoneNumber, normalPhoneStructu
 	
 	### give a summary of the data	
 	summary(agrResultsMeanDrift$TrialTime)
-	mean_per_phonestructure$mean<-mean(agrResultsMeanDrift$TrialTime)
+	print(mean(agrResultsMeanDrift$TrialTime))
+	mean_per_phonestructure [nrow(mean_per_phonestructure)+1,] =  list(0, mean(agrResultsMeanDrift$TrialTime))
 
 }
 
@@ -343,13 +325,7 @@ updateTimestampslist <- function(timestampsList, totalTime)
 	
 }
 	
-	
-	
-	
-	
-	
-	
-	
+
 ### This function calculates how much the car drifts during episodes where the driver/model is not actively driving
 calculateLaneDrift <- function(startPositionOfDrift, startVelocityOfDrift, driftTimeInMilliSeconds)
 {
