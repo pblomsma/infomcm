@@ -205,7 +205,7 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
 {
   #Create all possible strategies
   all_chunk_configurations <- list(c(), c(1))
-  nrSimulations <- 50
+  nrSimulations <- 1
   mean_per_phonestructure <- data.frame(i = double(), mean = double())
   for (chunknum in 2:10)
   {
