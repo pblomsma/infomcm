@@ -205,7 +205,7 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
 {
   #Create all possible strategies
   all_chunk_configurations <- list(c(), c(1))
-  nrSimulations <- 1
+  nrSimulations <- 50
   mean_per_phonestructure <- data.frame(i = double(), mean = double())
   for (chunknum in 2:10)
   {
@@ -254,7 +254,7 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
     {
       for (i in 1:nrSimulations)
       {
-        
+        print(i)
         ### run the simulation and store the output in a table
         locTab <- runOneTrial(strategy, steerTimes,normalPhoneStructure,phoneStringLength,phoneNumber)
         
@@ -311,6 +311,8 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
          col=c("red","green", "blue"), pch=21:23, lty=1:2)
   ### give a summary of the data	
   summary(agrResultsMeanDrift$TrialTime)
+  print(mean(agrResultsMeanDrift$TrialTime))
+  return(mean(agrResultsMeanDrift$x))
 }
 
 
