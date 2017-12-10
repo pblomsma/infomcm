@@ -301,21 +301,44 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
   with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log = "x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)", main =paste0("Result of runAllComplexStrategies with ", as.character(nrSimulations) , " simulation(s) (", as.character(nrow(tableAllSamples)) ,  " datapoints)")))
   ### plot of only the 5 and 6 interliving
   points(agrResultsMeanDriftonly56$TrialTime/1000,abs(agrResultsMeanDriftonly56$dev),col="red",bg="red",pch =21)
+
   ### plotinf the mean of the human data
-  df_meanlane <- 0.7192377
-  sf_meanlane <- 0.3748644
-  sf_meantime <- 5851.2128/1000
-  df_meantime <- 4002.9412/1000
-  sf_sd <- sd(sf$timeRelativeToTrialStart)
-  sf_se <- sf_sd/sqrt(length(dualDialFocus_keymean$lanePosition.count))
-  df_sd <- sd(sf$timeRelativeToTrialStart)
-  df_se <- sf_sd/sqrt(length(dualDialFocus_keymean$lanePosition.count))
+  sf_means_subset <- sf[which(sf$phoneNrLengthBeforeKeyPress=='11'),] 
   
+  sf_meanlane <- sf_means_subset$lanePosition
+  sf_meanlane.se <- sf_means_subset$lanePosition.se
+  
+  sf_meantime <- sf_means_subset$timeRelativeToTrialStart / 1000
+  sf_meantime.se <- sf_means_subset$timeRelativeToTrialStart.se / 1000
+  
+  
+  df_means_subset <- df[which(df$phoneNrLengthBeforeKeyPress=='11'),] 
+
+  df_meanlane <- df_means_subset$lanePosition
+  df_meanlane.se <- df_means_subset$lanePosition.se
+  
+  df_meantime <- df_means_subset$timeRelativeToTrialStart / 1000
+  df_meantime.se <- df_means_subset$timeRelativeToTrialStart.se / 1000
+  
+  
+  #SF points + arrows
   points(sf_meantime,sf_meanlane, col="green",pch=22, ylim = g_range,bg="green")
-  arrows(sf_meantime,sf_meanlane - sf$lanePosition.se,sf_meantime,sf_meanlane + sf$lanePosition.se, angle=90,code=3, col = "green", length = 0.1)
-  arrows(sf_meantime - sf_se , sf_meanlane , sf_meantime + sf_se,sf_meanlane , angle = 0, code = 3, col="green", length = 0.1)
-  points(df_meantime,df_meanlane, col="blue",pch=23, ylim = g_range, bg="blue")
-  arrows(df_meantime,df_meanlane - df$lanePosition.se,df_meantime,df_meanlane + df$lanePosition.se, angle=90,code=3, col = "blue", length = 0.1)
+  
+  #Horizontal Arrows: se error regarding lane. (x0, y0, x1 = x0, y1 = y0)
+  arrows(sf_meantime,sf_meanlane - sf_meanlane.se,sf_meantime,sf_meanlane + sf_meanlane.se, angle=90,code=3, col = "green", length = 0.1)
+  
+  #Vertical Arrows: se error regarding dial time. (x0, y0, x1 = x0, y1 = y0)
+  arrows(sf_meantime - sf_meantime.se, sf_meanlane , sf_meantime + sf_meantime.se, sf_meanlane , angle = 90, code = 3, col="green", length = 0.1)
+  
+  #DF points + arrows
+  points(df_meantime,df_meanlane, col="blue",pch=22, ylim = g_range)
+  
+  #Horizontal Arrows: se error regarding lane. (x0, y0, x1 = x0, y1 = y0)
+  arrows(df_meantime,df_meanlane - df_meanlane.se,df_meantime,df_meanlane + df_meanlane.se, angle=90,code=3, col = "blue", length = 0.1)
+  
+  #Vertical Arrows: se error regarding dial time. (x0, y0, x1 = x0, y1 = y0)
+  arrows(df_meantime - df_meantime.se, df_meanlane , df_meantime + df_meantime.se, df_meanlane , angle = 90, code = 3, col="blue", length = 0.1)
+  
   # Create labels and legend
   legend(12, 3, c("Interleave between the 5th and 6th digit","Steering focus mean of human data", "Dialing focus mean of human data"), cex=0.8, 
          col=c("red","green", "blue"), pch=21:23, lty=1:2)
