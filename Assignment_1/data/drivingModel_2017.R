@@ -340,7 +340,7 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
   arrows(df_meantime - df_meantime.se, df_meanlane , df_meantime + df_meantime.se, df_meanlane , angle = 90, code = 3, col="blue", length = 0.1)
   
   # Create labels and legend
-  legend(12, 3, c("Interleave between the 5th and 6th digit","Steering focus mean of human data", "Dialing focus mean of human data"), cex=0.8, 
+  legend(12, 1.5, c("Interleave between the 5th and 6th digit","Steering focus mean of human data", "Dialing focus mean of human data"), cex=0.8, 
          col=c("red","green", "blue"), pch=21:23, lty=1:2)
   ### give a summary of the data	
   summary(agrResultsMeanDrift$TrialTime)
