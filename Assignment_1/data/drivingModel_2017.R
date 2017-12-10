@@ -298,14 +298,24 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
   agrResultsMeanDriftonly56 <- agrResultsMeanDrift[agrResultsMeanDrift$strats=="5, 6", ]
   
   #### make a plot that visualizes all the strategies: note that trial time is divided by 1000 to get the time in seconds
-  with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)", main =paste0("Result of runAllComplexStrategies with ", as.character(nrSimulations) , " simulation(s) (", as.character(nrow(tableAllSamples)) ,  " datapoints)")))
+  with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log = "x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)", main =paste0("Result of runAllComplexStrategies with ", as.character(nrSimulations) , " simulation(s) (", as.character(nrow(tableAllSamples)) ,  " datapoints)")))
   ### plot of only the 5 and 6 interliving
   points(agrResultsMeanDriftonly56$TrialTime/1000,abs(agrResultsMeanDriftonly56$dev),col="red",bg="red",pch =21)
   ### plotinf the mean of the human data
-  points(mean(sf$timeRelativeToTrialStart/1000),mean(sf$lanePosition), col="green",pch=22, ylim = g_range,bg="green")
-  arrows(mean(sf$timeRelativeToTrialStart/1000),mean(sf$lanePosition) - sf$lanePosition.se,mean(sf$timeRelativeToTrialStart/1000),mean(sf$lanePosition) + sf$lanePosition.se, angle=90,code=3, col = "green", length = 0.1)
-  points(mean(df$timeRelativeToTrialStart/1000),mean(df$lanePosition), col="blue",pch=23, ylim = g_range, bg="blue")
-  arrows(mean(df$timeRelativeToTrialStart/1000),mean(df$lanePosition) - df$lanePosition.se,mean(df$timeRelativeToTrialStart/1000),mean(df$lanePosition) + df$lanePosition.se, angle=90,code=3, col = "blue", length = 0.1)
+  df_meanlane <- 0.7192377
+  sf_meanlane <- 0.3748644
+  sf_meantime <- 5851.2128/1000
+  df_meantime <- 4002.9412/1000
+  sf_sd <- sd(sf$timeRelativeToTrialStart)
+  sf_se <- sf_sd/sqrt(length(dualDialFocus_keymean$lanePosition.count))
+  df_sd <- sd(sf$timeRelativeToTrialStart)
+  df_se <- sf_sd/sqrt(length(dualDialFocus_keymean$lanePosition.count))
+  
+  points(sf_meantime,sf_meanlane, col="green",pch=22, ylim = g_range,bg="green")
+  arrows(sf_meantime,sf_meanlane - sf$lanePosition.se,sf_meantime,sf_meanlane + sf$lanePosition.se, angle=90,code=3, col = "green", length = 0.1)
+  arrows(sf_meantime - sf_se , sf_meanlane , sf_meantime + sf_se,sf_meanlane , angle = 0, code = 3, col="green", length = 0.1)
+  points(df_meantime,df_meanlane, col="blue",pch=23, ylim = g_range, bg="blue")
+  arrows(df_meantime,df_meanlane - df$lanePosition.se,df_meantime,df_meanlane + df$lanePosition.se, angle=90,code=3, col = "blue", length = 0.1)
   # Create labels and legend
   legend(12, 3, c("Interleave between the 5th and 6th digit","Steering focus mean of human data", "Dialing focus mean of human data"), cex=0.8, 
          col=c("red","green", "blue"), pch=21:23, lty=1:2)
