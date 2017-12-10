@@ -298,7 +298,7 @@ runAllComplexStrategies2 <- function(nrSimulations,phoneNumber)
   agrResultsMeanDriftonly56 <- agrResultsMeanDrift[agrResultsMeanDrift$strats=="5, 6", ]
   
   #### make a plot that visualizes all the strategies: note that trial time is divided by 1000 to get the time in seconds
-  with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",log="x",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)", main =paste0("Result of runAllComplexStrategies with ", as.character(nrSimulations) , " simulation(s) (", as.character(nrow(tableAllSamples)) ,  " datapoints)")))
+  with(agrResultsMeanDrift,plot(TrialTime/1000,abs(dev),pch=21,bg="dark grey",col="dark grey",xlab="Dial time (s)",ylab="Average Lateral Deviation (m)", main =paste0("Result of runAllComplexStrategies with ", as.character(nrSimulations) , " simulation(s) (", as.character(nrow(tableAllSamples)) ,  " datapoints)")))
   ### plot of only the 5 and 6 interliving
   points(agrResultsMeanDriftonly56$TrialTime/1000,abs(agrResultsMeanDriftonly56$dev),col="red",bg="red",pch =21)
   ### plotinf the mean of the human data
