@@ -1,4 +1,4 @@
-COG_DATA = read.csv("data\\keyPressDataWithLaneDeviation.csv", sep=",")
+COG_DATA = read.csv("C:\\Projects\\COG\\git\\Assignment_1\\data\\keyPressDataWithLaneDeviation.csv", sep=",")
 
 #question 1 A
 #Create subsets
@@ -53,21 +53,31 @@ no_typing_errors_abs_lanedeviation$lanePosition <- abs(no_typing_errors_abs_lane
 dualSteerFocus_onego <- no_typing_errors_abs_lanedeviation[no_typing_errors$partOfExperiment == "dualSteerFocus",]
 dualDialFocus_onego <- no_typing_errors_abs_lanedeviation[no_typing_errors$partOfExperiment == "dualDialFocus",]
 
-#Calculate mean, sd and length per key dualSteerFocus.
+#Calculate mean, sd and length per key dualSteerFocus for lanePosition and timeRelativeToTrialStart.
 dualSteerFocus_keymean <- aggregate(dualSteerFocus_onego,by=list(dualSteerFocus_onego$phoneNrLengthAfterKeyPress),mean)
 dualSteerFocus_keymeansd <- aggregate(dualSteerFocus_onego,by=list(dualSteerFocus_onego$phoneNrLengthAfterKeyPress),sd)
 dualSteerFocus_keymeanlength <- aggregate(dualSteerFocus_onego,by=list(dualSteerFocus_onego$phoneNrLengthAfterKeyPress),length)
+
 dualSteerFocus_keymean$lanePosition.sd<- dualSteerFocus_keymeansd$lanePosition
 dualSteerFocus_keymean$lanePosition.count<- dualSteerFocus_keymeanlength$lanePosition
 dualSteerFocus_keymean$lanePosition.se<-dualSteerFocus_keymean$lanePosition.sd/sqrt(dualSteerFocus_keymean$lanePosition.count)
 
-#Calculate mean, sd and length per key dualDialFocus
+dualSteerFocus_keymean$timeRelativeToTrialStart.sd<- dualSteerFocus_keymeansd$timeRelativeToTrialStart
+dualSteerFocus_keymean$timeRelativeToTrialStart.count<- dualSteerFocus_keymeanlength$timeRelativeToTrialStart
+dualSteerFocus_keymean$timeRelativeToTrialStart.se<-dualSteerFocus_keymean$timeRelativeToTrialStart.sd/sqrt(dualSteerFocus_keymean$timeRelativeToTrialStart.count)
+
+#Calculate mean, sd and length per key dualDialFocus for lanePosition and timeRelativeToTrialStart.
 dualDialFocus_keymean <- aggregate(dualDialFocus_onego,by=list(dualDialFocus_onego$phoneNrLengthAfterKeyPress),mean)
 dualDialFocus_keymeansd <- aggregate(dualDialFocus_onego,by=list(dualDialFocus_onego$phoneNrLengthAfterKeyPress),sd)
 dualDialFocus_keymeanlength <- aggregate(dualDialFocus_onego,by=list(dualDialFocus_onego$phoneNrLengthAfterKeyPress),length)
+
 dualDialFocus_keymean$lanePosition.sd<- dualDialFocus_keymeansd$lanePosition
 dualDialFocus_keymean$lanePosition.count<- dualDialFocus_keymeanlength$lanePosition
 dualDialFocus_keymean$lanePosition.se<-dualDialFocus_keymean$lanePosition.sd/sqrt(dualDialFocus_keymean$lanePosition.count)
+
+dualDialFocus_keymean$timeRelativeToTrialStart.sd<- dualDialFocus_keymeansd$timeRelativeToTrialStart
+dualDialFocus_keymean$timeRelativeToTrialStart.count<- dualDialFocus_keymeanlength$timeRelativeToTrialStart
+dualDialFocus_keymean$timeRelativeToTrialStart.se<-dualDialFocus_keymean$timeRelativeToTrialStart.sd/sqrt(dualDialFocus_keymean$timeRelativeToTrialStart.count)
 
 #Abbreviate for readability
 sf <- dualSteerFocus_keymean
