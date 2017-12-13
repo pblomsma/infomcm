@@ -23,43 +23,55 @@ load("data\\drivingModel_2017.R")
 #Model A1B1:
 gaussDeviateSD <- 0.13
 singleTaskKeyPressTimes <- c(400,400,400,400,400,400,400,400,400,400,400)
-runAllSimpleStrategies(10, "")
-dev.copy(png, paste(directory, 'Model_A1B1_10.png'))
+
+title <- "All complex strategies with 10 simulations: gaussDeviateSD = 0.13, singleTaskKeyPressTimes = 400ms"
+png( paste(directory, 'Model_A1B1_10_2.png'), width = 1300, height = 800 )
+runAllComplexStrategies(10, "0123456891", title )
 dev.off()
 
-runAllSimpleStrategies(50, "")
-dev.copy(png,paste(directory, 'Model_A1B1_50.png'))
+title <- 'All complex strategies with 50 simulations: gaussDeviateSD = 0.13, singleTaskKeyPressTimes = 400ms'
+png( paste(directory, 'Model_A1B1_50.png'), width = 1300, height = 800 )
+runAllComplexStrategies(50, "0123456891", title)
 dev.off()
 
 #Model A1B2
 gaussDeviateSD <- 0.13
 singleTaskKeyPressTimes <- c(250,250,250,250,250,250,250,250,250,250,250)
-runAllSimpleStrategies(10, "")
-dev.copy(png, paste(directory, 'Model_A1B2_10.png'))
+
+title <- "All complex strategies with 10 simulations: gaussDeviateSD = 0.13, singleTaskKeyPressTimes = 250ms"
+png( paste(directory, 'Model_A1B2_10.png'), width = 1300, height = 800 )
+runAllComplexStrategies(10, "0123456891", title)
 dev.off()
 
-runAllSimpleStrategies(50, "")
-dev.copy(png, paste(directory, 'Model_A1B2_50.png'))
+title <- "All complex strategies with 50 simulations: gaussDeviateSD = 0.13, singleTaskKeyPressTimes = 250ms"
+png( paste(directory, 'Model_A1B2_50.png'), width = 1300, height = 800 )
+runAllComplexStrategies(50, "0123456891", title)
 dev.off()
 
 #Model A2B1:
 gaussDeviateSD <- 0.062
 singleTaskKeyPressTimes <- c(400,400,400,400,400,400,400,400,400,400,400)
-runAllSimpleStrategies(10, "")
-dev.copy(png, paste(directory, 'Model_A2B1_10.png'))
+
+title <- "All complex strategies with 10 simulations: gaussDeviateSD = 0.062, singleTaskKeyPressTimes = 400ms"
+png( paste(directory, 'Model_A2B1_10.png'), width = 1300, height = 800 )
+runAllComplexStrategies(10, "0123456891", title)
 dev.off()
 
-runAllSimpleStrategies(50, "")
-dev.copy(png, paste(directory, 'Model_A2B1_50.png'))
+title <- "All complex strategies with 50 simulations: gaussDeviateSD = 0.062, singleTaskKeyPressTimes = 400ms"
+png( paste(directory, 'Model_A2B1_50.png'), width = 1300, height = 800 )
+runAllComplexStrategies(50, "0123456891",title)
 dev.off()
 
 #Model A2B2
 gaussDeviateSD <- 0.062
 singleTaskKeyPressTimes <- c(250,250,250,250,250,250,250,250,250,250,250)
-runAllSimpleStrategies(10, "")
-dev.copy(png,paste(directory, 'Model_A2B2_10.png'))
+
+title <- "All complex strategies with 10 simulations: gaussDeviateSD = 0.062, singleTaskKeyPressTimes = 250ms"
+png( paste(directory, 'Model_A2B2_10.png'), width = 1300, height = 800 )
+runAllComplexStrategies(10, "0123456891", title)
 dev.off()
 
-runAllSimpleStrategies(50, "")
-dev.copy(png,paste(directory, 'Model_A2B2_50.png'))
+title <- "All complex strategies with 50 simulations: gaussDeviateSD = 0.062, singleTaskKeyPressTimes = 250ms"
+png( paste(directory, 'Model_A2B2_50.png'), width = 1300, height = 800 )
+runAllComplexStrategies(50, "0123456891",  title)
 dev.off()
