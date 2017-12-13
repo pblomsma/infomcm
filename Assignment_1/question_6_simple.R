@@ -24,7 +24,6 @@ load("data\\drivingModel_2017.R")
 #Model A1B1:
 gaussDeviateSD <- 0.13
 singleTaskKeyPressTimes <- c(400,400,400,400,400,400,400,400,400,400,400)
-
 png( paste(directory, 'Model_A1B1_10_runAllSimpleStrategies.png'), width = 1300, height = 800 )
 runAllSimpleStrategies(10, "0123456891")
 dev.off()
@@ -53,8 +52,8 @@ png( paste(directory, 'Model_A2B1_10_runAllSimpleStrategies.png'), width = 1300,
 runAllSimpleStrategies(10, "0123456891")
 dev.off()
 
-png( paste(directory, 'Model_A2B1_50_runAllSimpleStrategies_redo.png'), width = 1300, height = 800 )
-runAllSimpleStrategies(50, "0123456891",title)
+png( paste(directory, 'Model_A2B1_50_runAllSimpleStrategies.png'), width = 1300, height = 800 )
+runAllSimpleStrategies(50, "0123456891")
 dev.off()
 
 #Model A2B2
