@@ -34,18 +34,13 @@ trainModel <- function(traindata)
   
   for (i in seq(1, length(data.train[,1]), by=2)) 
   {
-    current_term <- data.train[i,1]
+    current_term <-  as.character(data.train[i,1])
     frequency_0 <- data.train[i,2]
     frequency_1 <- data.train[i+1,2]
 
-    probability <- (frequency_0)/(frequency_0 + frequency_1)
+    print(current_term)
+    priors [nrow(priors)+1,] = list(current_term,(frequency_0)/(frequency_0 + frequency_1))
   
-    
-    priors 
-      
-        print(paste("term ", current_term))
-    print(paste("Probability ", probability))
-
   }
   
   data.train
