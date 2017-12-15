@@ -30,22 +30,23 @@ trainModel <- function(traindata)
   library(tokenizers)
   install.packages("tokenizers")
 
-  priors <- data.frame(term = character(), probability = double()) 
   
-  for (i in seq(1, length(data.train[,1]), by=2)) 
+  sum_0 <- sum(data.train[ which(data.train$sentiment==0), 2] )
+  sum_1 <- sum(data.train[ which(data.train$sentiment==1), 2] )
+  
+  for (i in 1:nrow(data.train)) 
   {
-    current_term <-  as.character(data.train[i,1])
-    frequency_0 <- data.train[i,2]
-    frequency_1 <- data.train[i+1,2]
-
-    print(current_term)
-    priors [nrow(priors)+1,] = list(current_term,(frequency_0)/(frequency_0 + frequency_1))
-  
+    if(i %% 2 == 0) #sentiment 0
+    {
+      data.train[i,4] <- data.train[i,2] / sum_0 
+    }
+    else # sentiment 1
+    {
+      data.train[i,4] <- data.train[i,2] / sum_1
+    }
   }
+  priors <- data.train[ which(data.train$sentiment==1), ]   
   
-  data.train
-  
-  tokenize_words("mY name \n is :-) MICHAEL Caine")
   
   
   
