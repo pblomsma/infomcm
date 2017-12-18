@@ -47,7 +47,11 @@ trainModel <- function(traindata)
   }
   priors <- data.train[ which(data.train$sentiment==1), ]   
   
-  
-  
+  multi <- 1
+  for (i in 1:length(priors$V4)) {
+    multi <- multi * priors$V4[i]
+    print(multi)
+  }  
+  print(multi)
   
 }
