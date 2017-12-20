@@ -103,7 +103,17 @@ preprocess <- function(text, model)
   return(text)
 }
 
-<<<<<<< HEAD
+#Step 3: Retrieve probabilities
+retrieveprobabilties <- function(text, model)  
+{
+  probabilities <- model[-c(1:nrow(model)), ]
+  for(i in 1:length(text))
+  {
+    probabilities <- rbind(probabilities, model[model$term == text[i],])
+  }
+}
+
+#Step 4: Classify
 classifier <- function(text.model){
   clas <- integer()
   pos_words <- text.model[text.model$sentiment == 1,]
@@ -114,27 +124,6 @@ classifier <- function(text.model){
   #positive sentiment
   for (i in 1:length(pos_words$prob)) {
     posmulti <- posmulti * pos_words$prob[i]
-=======
-#Step 3: Retrieve the probabilities
-retrieveprobabilties <- function(text, model)  
-{
-  probabilities <- model[-c(1:nrow(model)), ]
-  for(i in 1:length(text))
-  {
-    probabilities <- rbind(probabilities, model[model$term == text[i],])
-  }
-}
-
-
-
-
-
-  
-  multi <- 1
-  for (i in 1:length(priors$V4)) {
-    multi <- multi * priors$V4[i]
-    print(multi)
->>>>>>> Retrievement of probabilities + main loop
   }  
   claspos <- prob_class*posmulti
   #negative sentiment
@@ -143,7 +132,6 @@ retrieveprobabilties <- function(text, model)
   }  
   clasneg <- prob_class*negmulti
   
-<<<<<<< HEAD
   if(clasneg<claspos){
     clas <- 1
   } else 
@@ -152,6 +140,3 @@ retrieveprobabilties <- function(text, model)
 }    
 
 classifier(model)
-=======
-#}
->>>>>>> Retrievement of probabilities + main loop
