@@ -24,17 +24,6 @@ library(tokenizers)
 tokenize_words("mY name \n is :-) MICHAEL Caine")
 
 
-
-#Task 2
-# Build a function in R that classifies strings (text)
-classifyText <- function(text, model)  
-{
-  
-  
- 
-  
-}
-
 #Main code:
 model <- trainModel(data.train)
 
@@ -53,7 +42,7 @@ for(i in 1:nrow(data.test))
   result <- classifier(current_probs)
 }
 
-classifier
+
 
 #Step 1: Create the word probabilities
 trainModel <- function(traindata)  
@@ -111,6 +100,7 @@ retrieveprobabilties <- function(text, model)
   {
     probabilities <- rbind(probabilities, model[model$term == text[i],])
   }
+  return(probabilities)
 }
 
 #Step 4: Classify
