@@ -110,6 +110,9 @@ retrieveprobabilties <- function(text, model)
 #Step 4: Classify
 classifier <- function(text.model){
   clas <- integer()
+  if (is.null(text.model))
+  {return(sample(0:1,1))}
+  else{
   pos_words <- text.model[text.model$sentiment == 1,]
   neg_words <- text.model[text.model$sentiment == 0,]
   posmulti <- 1
@@ -129,8 +132,6 @@ classifier <- function(text.model){
   if(clasneg<claspos){
     clas <- 1
   } else 
-    clas <- 0
+    clas <- 0}
   return(clas)
 }    
-
-classifier(model)
