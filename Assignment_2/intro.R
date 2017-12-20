@@ -38,6 +38,22 @@ classifyText <- function(text, model)
 #Main code:
 model <- trainModel(data.train)
 
+#Loop over the test texts
+data.test <- read.csv("http://ricknouwen.org/movie.testing.frame",
+                      sep=",",
+                      colClasses=c("character","character","integer"),
+                      header=TRUE)
+
+
+for(i in 1:nrow(data.test))
+{
+  current_text <- data.test[i,]$txt
+  current_text <- preprocess(current_text, model)
+  current_probs <-  retrieveprobabilties(current_text, model)
+  result <- classifier(current_probs)
+}
+
+classifier
 
 #Step 1: Create the word probabilities
 trainModel <- function(traindata)  
@@ -87,6 +103,7 @@ preprocess <- function(text, model)
   return(text)
 }
 
+<<<<<<< HEAD
 classifier <- function(text.model){
   clas <- integer()
   pos_words <- text.model[text.model$sentiment == 1,]
@@ -97,6 +114,27 @@ classifier <- function(text.model){
   #positive sentiment
   for (i in 1:length(pos_words$prob)) {
     posmulti <- posmulti * pos_words$prob[i]
+=======
+#Step 3: Retrieve the probabilities
+retrieveprobabilties <- function(text, model)  
+{
+  probabilities <- model[-c(1:nrow(model)), ]
+  for(i in 1:length(text))
+  {
+    probabilities <- rbind(probabilities, model[model$term == text[i],])
+  }
+}
+
+
+
+
+
+  
+  multi <- 1
+  for (i in 1:length(priors$V4)) {
+    multi <- multi * priors$V4[i]
+    print(multi)
+>>>>>>> Retrievement of probabilities + main loop
   }  
   claspos <- prob_class*posmulti
   #negative sentiment
@@ -105,6 +143,7 @@ classifier <- function(text.model){
   }  
   clasneg <- prob_class*negmulti
   
+<<<<<<< HEAD
   if(clasneg<claspos){
     clas <- 1
   } else 
@@ -113,3 +152,6 @@ classifier <- function(text.model){
 }    
 
 classifier(model)
+=======
+#}
+>>>>>>> Retrievement of probabilities + main loop
