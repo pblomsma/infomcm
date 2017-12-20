@@ -8,6 +8,16 @@ write.dcf(as.character(data.test[191,]$txt))
 
 data.train <- read.csv("http://ricknouwen.org/moviereview.training.frame", sep=",", header=TRUE)
 data.train$freq[data.train$freq==0] <- 0.001
+knownwords <- function (textnumber) {intersect(unlist(tokenize_words(data.test[textnumber,]$txt)),data.train$term)}
+knownwords(23)
+common.words <- scan("http://ricknouwen.org/stopwords.txt",
+                     sep="\n", what="")
+sentiment.words <-
+  scan("http://ricknouwen.org/sentimentwords.txt",
+       sep="\n", what="")
+adjective.words <-
+  scan("http://ricknouwen.org/adjectives.txt",
+       sep="\n", what="")
 
 ### install.packages{"tokenizers"}
 library(tokenizers)
