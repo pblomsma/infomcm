@@ -54,13 +54,29 @@ trainModel <- function(traindata)
   
   return(traindata)
 }
-
-  
-  multi <- 1
-  for (i in 1:length(priors$V4)) {
-    multi <- multi * priors$V4[i]
-    print(multi)
+classifier <- function(text.model){
+clas <- integer()
+pos_words <- text.model[text.model$sentiment == 1,]
+neg_words <- text.model[text.model$sentiment == 0,]
+  posmulti <- 1
+  negmulti <- 1
+  prob_class <- 0.5
+  #positive sentiment
+  for (i in 1:length(pos_words$prob)) {
+    posmulti <- posmulti * pos_words$prob[i]
   }  
-  print(multi)
+  claspos <- prob_class*posmulti
+  #negative sentiment
+  for (i in 1:length(neg_words$prob)) {
+    negmulti <- negmulti * neg_words$prob[i]
+  }  
+  clasneg <- prob_class*negmulti
+
+  if(clasneg<claspos){
+    clas <- 1
+  } else 
+    clas <- 0
+  return(clas)
+}    
   
-}
+classifier(model)
