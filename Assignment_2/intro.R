@@ -33,13 +33,20 @@ data.test <- read.csv("http://ricknouwen.org/movie.testing.frame",
                       colClasses=c("character","character","integer"),
                       header=TRUE)
 
+#Word lists:
+common.words <- scan("http://ricknouwen.org/stopwords.txt",sep="\n", what="")
+sentiment.words <- scan("http://ricknouwen.org/sentimentwords.txt", sep="\n", what="")
+adjective.words <-    scan("http://ricknouwen.org/adjectives.txt", sep="\n", what="")
+
+
+data.test["classifier_result"] <- NA
 
 for(i in 1:nrow(data.test))
 {
   current_text <- data.test[i,]$txt
   current_text <- preprocess(current_text, model)
   current_probs <-  retrieveprobabilties(current_text, model)
-  result <- classifier(current_probs)
+  data.test[i,]$classifier_result <- classifier(current_probs)
 }
 
 
@@ -68,10 +75,7 @@ preprocess <- function(text, model)
   library(tokenizers)
   
   #Download the lists.
-  common.words <- scan("http://ricknouwen.org/stopwords.txt",sep="\n", what="")
-  sentiment.words <- scan("http://ricknouwen.org/sentimentwords.txt", sep="\n", what="")
-  adjective.words <-    scan("http://ricknouwen.org/adjectives.txt", sep="\n", what="")
-  
+
   #tmp
   text <- data.test[23,]$txt
   
