@@ -25,27 +25,26 @@ classifyText <- function(text, model)
   
 }
 
+#Main code:
+model <- trainModel(data.train)
+
 trainModel <- function(traindata)  
 {
-  library(tokenizers)
-  install.packages("tokenizers")
+  #P(w_i|c = 1) = (freq w_i|c = 1) / total freq w_i
 
-  
-  sum_0 <- sum(data.train[ which(data.train$sentiment==0), 2] )
-  sum_1 <- sum(data.train[ which(data.train$sentiment==1), 2] )
-  
-  for (i in 1:nrow(data.train)) 
+  traindata["total_freq"] <- NA
+  for (i in seq(1,nrow(traindata),2)) 
   {
-    if(i %% 2 == 0) #sentiment 0
-    {
-      data.train[i,4] <- data.train[i,2] / sum_0 
-    }
-    else # sentiment 1
-    {
-      data.train[i,4] <- data.train[i,2] / sum_1
-    }
+    total_freq <- traindata[i,2] + traindata[i+1,2]
+
+    traindata$total_freq[i] <- total_freq
+    traindata$total_freq[i+1] <- total_freq
   }
-  priors <- data.train[ which(data.train$sentiment==1), ]   
+  traindata$prob <- traindata$freq / traindata$total_freq
+  
+  return(traindata)
+}
+
   
   multi <- 1
   for (i in 1:length(priors$V4)) {
