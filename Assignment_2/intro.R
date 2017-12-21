@@ -81,8 +81,84 @@ classifier <- function(text, model)
   }
   
   if(clasneg<claspos){
-    clas <- 1
-  } else 
-    clas <- 0}
-  return(clas)
+    return(1)
+  }
+  return(0)
 }    
+
+#Get test results.
+
+
+
+#Step 5: count false and true positive
+#data frame with number of tp,fp, fn,tn for the classes 1 and 0 in that order.  
+numberof <- data.frame(int.sent = c(0,0,0,0,0,0,0,0),int.comon = c(0,0,0,0,0,0,0,0),int.adj = c(0,0,0,0,0,0,0,0))
+
+#tp_1 <-  #numberof$int.sent[1]
+#fp_1 <-  #numberof$int.sent[2]
+#fn_1 <-  #numberof$int.sent[3]
+#tn_1 <-  #numberof$int.sent[4]
+#tp_0 <-  #numberof$int.sent[5]
+#fp_0 <-  #numberof$int.sent[6]
+#fn_0 <-  #numberof$int.sent[7]
+#tn_0 <-  #numberof$int.sent[8]
+#count false and true positive
+for (i in 1:length(data.test$sent)) {
+  if(data.test$sent[i]==1){
+    if(data.test$sent[i]==data.test$classifier_result[i])
+    {
+      numberof$int.sent[1] <- numberof$int.sent[1] + 1
+      numberof$int.sent[8] <- numberof$int.sent[8] + 1
+    }else{
+      numberof$int.sent[3] <- numberof$int.sent[3] + 1
+      numberof$int.sent[6] <- numberof$int.sent[6] + 1 
+    }
+  }else{
+    if(data.test$sent[i]==data.test$classifier_result[i])
+    {
+      numberof$int.sent[5] <- numberof$int.sent[5] + 1
+      numberof$int.sent[4] <- numberof$int.sent[4] + 1
+    }else{
+      numberof$int.sent[2] <- numberof$int.sent[2] + 1
+      numberof$int.sent[7] <- numberof$int.sent[7] + 1 
+    }
+  }
+}
+#returns vector c(Accuracy,Presion,Recall,F1) depends on the classification that you want and
+# the number of clasificartion
+evaluation_classifier <- function(class,numclass){
+  eval <- c(0,0,0,0)
+  if(class == 1){
+    eval[1] <- (numberof$int.sent[1]+numberof$int.sent[4])/numclass
+    eval[2] <-  numberof$int.sent[1]/(numberof$int.sent[1]+numberof$int.sent[2])
+    eval[3] <-  numberof$int.sent[1]/(numberof$int.sent[1]+numberof$int.sent[3])
+    eval[4] <-  eval[2]*eval[3]/(eval[2]+eval[3])
+    if(eval[2]=="NaN"){
+      eval[2] <- 0
+    }
+    if(eval[3]=="NaN"){
+      eval[3] <- 0
+    }
+    if(eval[4]=="NaN"){
+      eval[4] <- 1
+    }
+  }else if (class == 0){
+    eval[1] <- (numberof$int.sent[5]+numberof$int.sent[8])/numclass
+    eval[2] <-  numberof$int.sent[5]/(numberof$int.sent[5]+numberof$int.sent[6])
+    eval[3] <-  numberof$int.sent[5]/(numberof$int.sent[5]+numberof$int.sent[7])
+    eval[4] <- eval[2]*eval[3]/(eval[2]+eval[3])
+    if(eval[2]=="NaN"){
+      eval[2] <- 0
+    }
+    if(eval[3]=="NaN"){
+      eval[3] <- 0
+    }
+    if(eval[4]=="NaN"){
+      eval[4] <- 1
+    }
+  }else
+    print("Not valid")
+  return(eval)
+}
+evaluation_sent1 <- evaluation_classifier(1,length(data.test$sent))
+evaluation_sent0 <- evaluation_classifier(0,length(data.test$sent))
