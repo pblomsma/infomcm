@@ -67,6 +67,7 @@ classifier <- function(text, model)
   {
     return(sample(0:1,1))
   }
+  
   negmulti <- prod(probabilities[probabilities$sentiment == 0,]$prob)
   posmulti <- prod(probabilities[probabilities$sentiment == 1,]$prob)
   
@@ -80,11 +81,44 @@ classifier <- function(text, model)
     posmulti <- 0
   }
   
-  if(clasneg<claspos){
+  if(negmulti<posmulti){
     return(1)
   }
   return(0)
 }    
+
+#MAIN CODE
+library(tokenizers)
+
+#Load datasets
+data.test <- read.csv("http://ricknouwen.org/movie.testing.frame", sep=",", colClasses=c("character","character","integer"),header=TRUE)
+data.train <- read.csv("http://ricknouwen.org/moviereview.training.frame", sep=",", header=TRUE)
+common.words <- scan("http://ricknouwen.org/stopwords.txt",sep="\n", what="")
+sentiment.words <-  scan("http://ricknouwen.org/sentimentwords.txt", sep="\n", what="")
+adjective.words <-  scan("http://ricknouwen.org/adjectives.txt", sep="\n", what="")
+
+#Fix freq=0 problem
+data.train$freq[data.train$freq==0] <- 0.001
+
+
+#Training the model
+model <- trainModel(data.train)
+
+#Testing the model
+data.test["classifier_result_T2"] <- NA
+data.test["classifier_result_T3"] <- NA
+data.test["classifier_result_T4"] <- NA
+
+for(i in 1:nrow(data.test))
+{
+  current_text <- data.test[i,]$txt
+  data.test[i,]$classifier_result_T2 <- classifier(preprocess2(current_text, model),model)
+  data.test[i,]$classifier_result_T3 <- classifier(preprocess3(current_text, model),model)
+  data.test[i,]$classifier_result_T4 <- classifier(preprocess4(current_text, model),model)
+}
+
+#Creating statistics:
+
 
 #Get test results.
 
