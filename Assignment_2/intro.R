@@ -53,6 +53,20 @@ preprocess4 <- function(text, model)
   return(text)
 }
 
+#TASK 5: "Optimize the Bayes Classifier"
+preprocess5 <- function(text, model)  
+{
+  library(tokenizers)
+  
+  #convert text to vector
+  text <- unlist(tokenize_words(text))
+  
+  text <- intersect(text, sentiment.adjective.words)
+  text <- intersect(text, model$term)
+  text <- setdiff(text, common.words)
+  return(text)
+}
+
 #FUNCTION: classify
 classifier <- function(text, model)
 {
@@ -96,6 +110,7 @@ data.train <- read.csv("http://ricknouwen.org/moviereview.training.frame", sep="
 common.words <- scan("http://ricknouwen.org/stopwords.txt",sep="\n", what="")
 sentiment.words <-  scan("http://ricknouwen.org/sentimentwords.txt", sep="\n", what="")
 adjective.words <-  scan("http://ricknouwen.org/adjectives.txt", sep="\n", what="")
+sentiment.adjective.words <- union(sentiment.words, adjective.words)
 
 #Fix freq=0 problem
 data.train$freq[data.train$freq==0] <- 0.001
@@ -108,6 +123,8 @@ model <- trainModel(data.train)
 data.test["classifier_result_T2"] <- NA
 data.test["classifier_result_T3"] <- NA
 data.test["classifier_result_T4"] <- NA
+data.test["classifier_result_T5"] <- NA
+
 
 for(i in 1:nrow(data.test))
 {
@@ -115,6 +132,7 @@ for(i in 1:nrow(data.test))
   data.test[i,]$classifier_result_T2 <- classifier(preprocess2(current_text, model),model)
   data.test[i,]$classifier_result_T3 <- classifier(preprocess3(current_text, model),model)
   data.test[i,]$classifier_result_T4 <- classifier(preprocess4(current_text, model),model)
+  data.test[i,]$classifier_result_T5 <- classifier(preprocess4(current_text, model),model)
 }
 
 #Creating statistics:
