@@ -126,46 +126,49 @@ for(i in 1:nrow(data.test))
 
 #Step 5: count false and true positive
 #data frame with number of tp,fp, fn,tn for the classes 1 and 0 in that order.  
-numberof <- data.frame(int.sent = c(0,0,0,0,0,0,0,0),int.comon = c(0,0,0,0,0,0,0,0),int.adj = c(0,0,0,0,0,0,0,0))
 
-#tp_1 <-  #numberof$int.sent[1]
-#fp_1 <-  #numberof$int.sent[2]
-#fn_1 <-  #numberof$int.sent[3]
-#tn_1 <-  #numberof$int.sent[4]
-#tp_0 <-  #numberof$int.sent[5]
-#fp_0 <-  #numberof$int.sent[6]
-#fn_0 <-  #numberof$int.sent[7]
-#tn_0 <-  #numberof$int.sent[8]
+#tp_1 <-  #evaluationnumbers[1]
+#fp_1 <-  #evaluationnumbers[2]
+#fn_1 <-  #evaluationnumbers[3]
+#tn_1 <-  #evaluationnumbers[4]
+#tp_0 <-  #evaluationnumbers[5]
+#fp_0 <-  #evaluationnumbers[6]
+#fn_0 <-  #evaluationnumbers[7]
+#tn_0 <-  #evaluationnumbers[8]
 #count false and true positive
-for (i in 1:length(data.test$sent)) {
-  if(data.test$sent[i]==1){
-    if(data.test$sent[i]==data.test$classifier_result[i])
-    {
-      numberof$int.sent[1] <- numberof$int.sent[1] + 1
-      numberof$int.sent[8] <- numberof$int.sent[8] + 1
-    }else{
-      numberof$int.sent[3] <- numberof$int.sent[3] + 1
-      numberof$int.sent[6] <- numberof$int.sent[6] + 1 
-    }
-  }else{
-    if(data.test$sent[i]==data.test$classifier_result[i])
-    {
-      numberof$int.sent[5] <- numberof$int.sent[5] + 1
-      numberof$int.sent[4] <- numberof$int.sent[4] + 1
-    }else{
-      numberof$int.sent[2] <- numberof$int.sent[2] + 1
-      numberof$int.sent[7] <- numberof$int.sent[7] + 1 
-    }
-  }
-}
+
+test <- data.frame(c(1,0,1),c(1,0,0),c(0,0,0))
+
 #returns vector c(Accuracy,Presion,Recall,F1) depends on the classification that you want and
 # the number of clasificartion
-evaluation_classifier <- function(class,numclass){
+statistics <- function(column1,column2,class){
+  evaluationnumbers <- c(0,0,0,0,0,0,0,0)
+  for (i in 1:length(column1)) {
+    if(column1[i]==1){
+      if(column1[i]==column2[i])
+      {
+        evaluationnumbers[1] <- evaluationnumbers[1] + 1
+        evaluationnumbers[8] <- evaluationnumbers[8] + 1
+      }else{
+        evaluationnumbers[3] <- evaluationnumbers[3] + 1
+        evaluationnumbers[6] <- evaluationnumbers[6] + 1 
+      }
+    }else if(column1[i]==0){
+      if(column1[i]==column2[i])
+      {
+        evaluationnumbers[5] <- evaluationnumbers[5] + 1
+        evaluationnumbers[4] <- evaluationnumbers[4] + 1
+      }else{
+        evaluationnumbers[2] <- evaluationnumbers[2] + 1
+        evaluationnumbers[7] <- evaluationnumbers[7] + 1 
+      }
+    }
+  }
   eval <- c(0,0,0,0)
   if(class == 1){
-    eval[1] <- (numberof$int.sent[1]+numberof$int.sent[4])/numclass
-    eval[2] <-  numberof$int.sent[1]/(numberof$int.sent[1]+numberof$int.sent[2])
-    eval[3] <-  numberof$int.sent[1]/(numberof$int.sent[1]+numberof$int.sent[3])
+    eval[1] <- (evaluationnumbers[1]+evaluationnumbers[4])/length(column1)
+    eval[2] <-  evaluationnumbers[1]/(evaluationnumbers[1]+evaluationnumbers[2])
+    eval[3] <-  evaluationnumbers[1]/(evaluationnumbers[1]+evaluationnumbers[3])
     eval[4] <-  eval[2]*eval[3]/(eval[2]+eval[3])
     if(eval[2]=="NaN"){
       eval[2] <- 0
@@ -177,9 +180,9 @@ evaluation_classifier <- function(class,numclass){
       eval[4] <- 1
     }
   }else if (class == 0){
-    eval[1] <- (numberof$int.sent[5]+numberof$int.sent[8])/numclass
-    eval[2] <-  numberof$int.sent[5]/(numberof$int.sent[5]+numberof$int.sent[6])
-    eval[3] <-  numberof$int.sent[5]/(numberof$int.sent[5]+numberof$int.sent[7])
+    eval[1] <- (evaluationnumbers[5]+evaluationnumbers[8])/length(column1)
+    eval[2] <-  evaluationnumbers[5]/(evaluationnumbers[5]+evaluationnumbers[6])
+    eval[3] <-  evaluationnumbers[5]/(evaluationnumbers[5]+evaluationnumbers[7])
     eval[4] <- eval[2]*eval[3]/(eval[2]+eval[3])
     if(eval[2]=="NaN"){
       eval[2] <- 0
@@ -192,7 +195,12 @@ evaluation_classifier <- function(class,numclass){
     }
   }else
     print("Not valid")
-  return(eval)
+  print(evaluationnumbers)
+  print(eval)
 }
-evaluation_sent1 <- evaluation_classifier(1,length(data.test$sent))
-evaluation_sent0 <- evaluation_classifier(0,length(data.test$sent))
+statistics(data.test$sent,data.test$classifier_result_T2,0)
+statistics(data.test$sent,data.test$classifier_result_T2,1)
+statistics(data.test$sent,data.test$classifier_result_T3,0)
+statistics(data.test$sent,data.test$classifier_result_T3,1)
+statistics(data.test$sent,data.test$classifier_result_T4,0)
+statistics(data.test$sent,data.test$classifier_result_T4,1)
