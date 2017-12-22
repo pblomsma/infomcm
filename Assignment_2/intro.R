@@ -127,15 +127,26 @@ data.test["classifier_result_T3"] <- NA
 data.test["classifier_result_T4"] <- NA
 data.test["classifier_result_T5"] <- NA
 
-
 for(i in 1:nrow(data.test))
 {
   current_text <- data.test[i,]$txt
   data.test[i,]$classifier_result_T2 <- classifier(preprocess2(current_text, model),model)
   data.test[i,]$classifier_result_T3 <- classifier(preprocess3(current_text, model),model)
   data.test[i,]$classifier_result_T4 <- classifier(preprocess4(current_text, model),model)
-  data.test[i,]$classifier_result_T5 <- classifier(preprocess4(current_text, model),model)
+  data.test[i,]$classifier_result_T5 <- classifier(preprocess5(current_text, model),model)
 }
+
+#Testing model with other data (task 6)
+data.task6.test["classifier_result_T6"] <- NA
+
+for(i in 1:nrow(data.task6.test))
+{
+  current_text <- data.task6.test[i,]$txt
+  data.test[i,]$classifier_result_T6 <- classifier(preprocess5(current_text, model),model)
+}
+
+
+
 
 #Creating statistics:
 
@@ -218,9 +229,23 @@ statistics <- function(column1,column2,class){
   print(evaluationnumbers)
   print(eval)
 }
+
+print("Results for Task 2")
 statistics(data.test$sent,data.test$classifier_result_T2,0)
 statistics(data.test$sent,data.test$classifier_result_T2,1)
+
+print("Results for Task 3")
 statistics(data.test$sent,data.test$classifier_result_T3,0)
 statistics(data.test$sent,data.test$classifier_result_T3,1)
+
+print("Results for Task 4")
 statistics(data.test$sent,data.test$classifier_result_T4,0)
 statistics(data.test$sent,data.test$classifier_result_T4,1)
+
+print("Results for Task 5")
+statistics(data.test$sent,data.test$classifier_result_T5,0)
+statistics(data.test$sent,data.test$classifier_result_T5,1)
+
+print("Results for Task 6")
+statistics(data.task6.test$sent,data.task6.test$classifier_result_T6,0)
+statistics(data.task6.test$sent,data.task6.test$classifier_result_T6,1)
