@@ -107,9 +107,11 @@ library(tokenizers)
 #Load datasets
 data.test <- read.csv("http://ricknouwen.org/movie.testing.frame", sep=",", colClasses=c("character","character","integer"),header=TRUE)
 data.train <- read.csv("http://ricknouwen.org/moviereview.training.frame", sep=",", header=TRUE)
+data.task6.test <- read.csv("C:\\Projects\\COG\\git\\Assignment_2\\amazon_test_set.csv", sep=";")
 common.words <- scan("http://ricknouwen.org/stopwords.txt",sep="\n", what="")
 sentiment.words <-  scan("http://ricknouwen.org/sentimentwords.txt", sep="\n", what="")
 adjective.words <-  scan("http://ricknouwen.org/adjectives.txt", sep="\n", what="")
+
 sentiment.adjective.words <- union(sentiment.words, adjective.words)
 
 #Fix freq=0 problem
