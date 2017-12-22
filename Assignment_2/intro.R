@@ -61,13 +61,23 @@ preprocess5 <- function(text, model)
   #convert text to vector
   text <- unlist(tokenize_words(text))
   
+  #Remove not
+  for(i in 1:length(text))
+  {
+    if(text[i] == "not")
+    {
+      text[i] = ""
+      text[i+1] = ""
+    }
+  }
+  
   text <- intersect(text, sentiment.adjective.words)
   text <- intersect(text, model$term)
   text <- setdiff(text, common.words)
   return(text)
 }
 
-#FUNCTION: classify
+#FUNCTION: classify for tak 1-4
 classifier <- function(text, model)
 {
   #Get all probabilties per word.
@@ -101,6 +111,13 @@ classifier <- function(text, model)
   return(0)
 }    
 
+#FUNCTION: classify for task 5
+classifier5 <- function(text, model)
+{
+  return(classifier(unique(text), model))
+}    
+
+
 #MAIN CODE
 library(tokenizers)
 
@@ -133,7 +150,7 @@ for(i in 1:nrow(data.test))
   data.test[i,]$classifier_result_T2 <- classifier(preprocess2(current_text, model),model)
   data.test[i,]$classifier_result_T3 <- classifier(preprocess3(current_text, model),model)
   data.test[i,]$classifier_result_T4 <- classifier(preprocess4(current_text, model),model)
-  data.test[i,]$classifier_result_T5 <- classifier(preprocess5(current_text, model),model)
+  data.test[i,]$classifier_result_T5 <- classifier5(preprocess5(current_text, model),model)
 }
 
 #Testing model with other data (task 6)
@@ -228,6 +245,7 @@ statistics <- function(column1,column2,class){
     print("Not valid")
   print(evaluationnumbers)
   print(eval)
+  return(eval)
 }
 
 print("Results for Task 2")
@@ -249,3 +267,4 @@ statistics(data.test$sent,data.test$classifier_result_T5,1)
 print("Results for Task 6")
 statistics(data.task6.test$sent,data.task6.test$classifier_result_T6,0)
 statistics(data.task6.test$sent,data.task6.test$classifier_result_T6,1)
+
