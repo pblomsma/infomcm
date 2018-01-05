@@ -1,3 +1,19 @@
+#This is the code used for Assignment 2 for the course of Cognitive Modeling 2017/2018.
+#Created by: Adrian Briceno A. 6189865 and Peter Blomsma 5909384
+
+#The code is divided into two parts:
+#PART 1: The different functions:
+## trainModel - Calculates the word probabilities for each sentiment and adds those probabilities to the dataset containing the 
+
+## Preprocess functions, for every task is a specific preprocess function:  
+## preprocess2, preprocess3, preprocess4, preprocess5
+## classifier - Classifies a text based on a model (result of trainModel)
+## Statistics - Calculates the Accuracy, Presion, Recall and F1 for a classification test.  
+
+#PART 2: Main code
+## Runs the code for all assignments and prints all the results to screen.
+
+
 #FUNCTION: trainModel - Step 1: Create the word probabilities
 trainModel <- function(traindata)  
 {
@@ -77,7 +93,7 @@ preprocess5 <- function(text, model)
   return(text)
 }
 
-#FUNCTION: classify for tak 1-4
+#FUNCTION: Classifier
 classifier <- function(text, model)
 {
   #Get all probabilties per word.
@@ -111,83 +127,8 @@ classifier <- function(text, model)
   return(0)
 }    
 
-#FUNCTION: classify for task 5
-classifier5 <- function(text, model)
-{
-  return(classifier(unique(text), model))
-}    
 
-
-#MAIN CODE
-library(tokenizers)
-
-#Load datasets
-data.test <- read.csv("http://ricknouwen.org/movie.testing.frame", sep=",", colClasses=c("character","character","integer"),header=TRUE)
-data.train <- read.csv("http://ricknouwen.org/moviereview.training.frame", sep=",", header=TRUE)
-data.task6.test <- read.csv("C:\\Projects\\COG\\git\\Assignment_2\\amazon_test_set.csv", sep=";")
-common.words <- scan("http://ricknouwen.org/stopwords.txt",sep="\n", what="")
-sentiment.words <-  scan("http://ricknouwen.org/sentimentwords.txt", sep="\n", what="")
-adjective.words <-  scan("http://ricknouwen.org/adjectives.txt", sep="\n", what="")
-
-sentiment.adjective.words <- union(sentiment.words, adjective.words)
-
-#Fix freq=0 problem
-data.train$freq[data.train$freq==0] <- 0.001
-
-
-#Training the model
-model <- trainModel(data.train)
-
-#Testing the model
-data.test["classifier_result_T2"] <- NA
-data.test["classifier_result_T3"] <- NA
-data.test["classifier_result_T4"] <- NA
-data.test["classifier_result_T5"] <- NA
-
-for(i in 1:nrow(data.test))
-{
-  current_text <- data.test[i,]$txt
-  data.test[i,]$classifier_result_T2 <- classifier(preprocess2(current_text, model),model)
-  data.test[i,]$classifier_result_T3 <- classifier(preprocess3(current_text, model),model)
-  data.test[i,]$classifier_result_T4 <- classifier(preprocess4(current_text, model),model)
-  data.test[i,]$classifier_result_T5 <- classifier5(preprocess5(current_text, model),model)
-}
-
-#Testing model with other data (task 6)
-data.task6.test["classifier_result_T6"] <- NA
-
-for(i in 1:nrow(data.task6.test))
-{
-  current_text <- data.task6.test[i,]$txt
-  data.test[i,]$classifier_result_T6 <- classifier(preprocess5(current_text, model),model)
-}
-
-
-
-
-#Creating statistics:
-
-
-#Get test results.
-
-
-
-#Step 5: count false and true positive
-#data frame with number of tp,fp, fn,tn for the classes 1 and 0 in that order.  
-
-#tp_1 <-  #evaluationnumbers[1]
-#fp_1 <-  #evaluationnumbers[2]
-#fn_1 <-  #evaluationnumbers[3]
-#tn_1 <-  #evaluationnumbers[4]
-#tp_0 <-  #evaluationnumbers[5]
-#fp_0 <-  #evaluationnumbers[6]
-#fn_0 <-  #evaluationnumbers[7]
-#tn_0 <-  #evaluationnumbers[8]
-#count false and true positive
-
-test <- data.frame(c(1,0,1),c(1,0,0),c(0,0,0))
-
-#returns vector c(Accuracy,Presion,Recall,F1) depends on the classification that you want and
+# returns vector c(Accuracy,Presion,Recall,F1) depends on the classification that you want and
 # the number of clasificartion
 statistics <- function(column1,column2,class){
   evaluationnumbers <- c(0,0,0,0,0,0,0,0)
@@ -247,6 +188,71 @@ statistics <- function(column1,column2,class){
   print(eval)
   return(eval)
 }
+
+#PART 2: MAIN CODE
+library(tokenizers)
+
+#Load datasets
+data.test <- read.csv("http://ricknouwen.org/movie.testing.frame", sep=",", colClasses=c("character","character","integer"),header=TRUE)
+data.train <- read.csv("http://ricknouwen.org/moviereview.training.frame", sep=",", header=TRUE)
+data.task6.test <- read.csv("C:\\Projects\\COG\\git\\Assignment_2\\amazon_test_set.csv", sep=";")
+common.words <- scan("http://ricknouwen.org/stopwords.txt",sep="\n", what="")
+sentiment.words <-  scan("http://ricknouwen.org/sentimentwords.txt", sep="\n", what="")
+adjective.words <-  scan("http://ricknouwen.org/adjectives.txt", sep="\n", what="")
+
+sentiment.adjective.words <- union(sentiment.words, adjective.words)
+
+#Fix freq=0 problem
+data.train$freq[data.train$freq==0] <- 0.001
+
+#Train the model
+model <- trainModel(data.train)
+
+#Test the model for question 1-5
+data.test["classifier_result_T2"] <- NA
+data.test["classifier_result_T3"] <- NA
+data.test["classifier_result_T4"] <- NA
+data.test["classifier_result_T5"] <- NA
+
+for(i in 1:nrow(data.test))
+{
+  current_text <- data.test[i,]$txt
+  data.test[i,]$classifier_result_T2 <- classifier(preprocess2(current_text, model),model)
+  data.test[i,]$classifier_result_T3 <- classifier(preprocess3(current_text, model),model)
+  data.test[i,]$classifier_result_T4 <- classifier(preprocess4(current_text, model),model)
+  data.test[i,]$classifier_result_T5 <- classifier(preprocess5(current_text, model),model)
+}
+
+#Test the model for question 6
+data.task6.test["classifier_result_T6"] <- NA
+
+for(i in 1:nrow(data.task6.test))
+{
+  current_text <- data.task6.test[i,]$txt
+  data.test[i,]$classifier_result_T6 <- classifier(preprocess5(current_text, model),model)
+}
+
+#Creating statistics:
+
+
+#Get test results.
+
+
+
+#Step 5: count false and true positive
+#data frame with number of tp,fp, fn,tn for the classes 1 and 0 in that order.  
+
+#tp_1 <-  #evaluationnumbers[1]
+#fp_1 <-  #evaluationnumbers[2]
+#fn_1 <-  #evaluationnumbers[3]
+#tn_1 <-  #evaluationnumbers[4]
+#tp_0 <-  #evaluationnumbers[5]
+#fp_0 <-  #evaluationnumbers[6]
+#fn_0 <-  #evaluationnumbers[7]
+#tn_0 <-  #evaluationnumbers[8]
+#count false and true positive
+
+test <- data.frame(c(1,0,1),c(1,0,0),c(0,0,0))
 
 print("Results for Task 2")
 statistics(data.test$sent,data.test$classifier_result_T2,0)
