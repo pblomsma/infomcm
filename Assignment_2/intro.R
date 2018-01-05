@@ -194,8 +194,8 @@ library(tokenizers)
 
 #Load datasets
 data.test <- read.csv("http://ricknouwen.org/movie.testing.frame", sep=",", colClasses=c("character","character","integer"),header=TRUE)
-data.train <- read.csv("http://ricknouwen.org/moviereview.training.frame", sep=",", header=TRUE)
-data.task6.test <- read.csv("C:\\Projects\\COG\\git\\Assignment_2\\amazon_test_set.csv", sep=";")
+data.train <- read.csv("http://ricknouwen.org/moviereview.training.frame", sep=",",  header=TRUE)
+data.task6.test <- read.csv("C:\\Projects\\COG\\git\\Assignment_2\\amazon_test_set.csv", sep=",", colClasses=c("character","character","integer"),header=TRUE)
 common.words <- scan("http://ricknouwen.org/stopwords.txt",sep="\n", what="")
 sentiment.words <-  scan("http://ricknouwen.org/sentimentwords.txt", sep="\n", what="")
 adjective.words <-  scan("http://ricknouwen.org/adjectives.txt", sep="\n", what="")
@@ -229,7 +229,7 @@ data.task6.test["classifier_result_T6"] <- NA
 for(i in 1:nrow(data.task6.test))
 {
   current_text <- data.task6.test[i,]$txt
-  data.test[i,]$classifier_result_T6 <- classifier(preprocess5(current_text, model),model)
+  data.task6.test[i,]$classifier_result_T6 <- classifier(preprocess5(current_text, model),model)
 }
 
 #Creating statistics:
