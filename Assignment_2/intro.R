@@ -130,6 +130,19 @@ classifier <- function(text, model)
 
 # returns vector c(Accuracy,Presion,Recall,F1) depends on the classification that you want and
 # the number of clasificartion
+
+#data frame with number of tp,fp, fn,tn for the classes 1 and 0 in that order.  
+
+#tp_1 <-  #evaluationnumbers[1]
+#fp_1 <-  #evaluationnumbers[2]
+#fn_1 <-  #evaluationnumbers[3]
+#tn_1 <-  #evaluationnumbers[4]
+#tp_0 <-  #evaluationnumbers[5]
+#fp_0 <-  #evaluationnumbers[6]
+#fn_0 <-  #evaluationnumbers[7]
+#tn_0 <-  #evaluationnumbers[8]
+#count false and true positive
+
 statistics <- function(column1,column2,class){
   evaluationnumbers <- c(0,0,0,0,0,0,0,0)
   for (i in 1:length(column1)) {
@@ -232,28 +245,8 @@ for(i in 1:nrow(data.task6.test))
   data.task6.test[i,]$classifier_result_T6 <- classifier(preprocess5(current_text, model),model)
 }
 
-#Creating statistics:
-
-
-#Get test results.
-
-
-
-#Step 5: count false and true positive
-#data frame with number of tp,fp, fn,tn for the classes 1 and 0 in that order.  
-
-#tp_1 <-  #evaluationnumbers[1]
-#fp_1 <-  #evaluationnumbers[2]
-#fn_1 <-  #evaluationnumbers[3]
-#tn_1 <-  #evaluationnumbers[4]
-#tp_0 <-  #evaluationnumbers[5]
-#fp_0 <-  #evaluationnumbers[6]
-#fn_0 <-  #evaluationnumbers[7]
-#tn_0 <-  #evaluationnumbers[8]
-#count false and true positive
-
+#Print the statistics:
 test <- data.frame(c(1,0,1),c(1,0,0),c(0,0,0))
-
 print("Results for Task 2")
 statistics(data.test$sent,data.test$classifier_result_T2,0)
 statistics(data.test$sent,data.test$classifier_result_T2,1)
@@ -273,4 +266,3 @@ statistics(data.test$sent,data.test$classifier_result_T5,1)
 print("Results for Task 6")
 statistics(data.task6.test$sent,data.task6.test$classifier_result_T6,0)
 statistics(data.task6.test$sent,data.task6.test$classifier_result_T6,1)
-
