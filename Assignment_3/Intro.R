@@ -30,19 +30,19 @@ subject12 <- COG_DATA + noise12
 #Now calculate the representational dissimilarity of each object pair, constructing a
 #representational dissimilarity matrix (RDM). Take the responses of each object and
 #calculate the dissimilarity from the responses to each other object.
-RDM_orig <- 1 - cor(COG_DATA, COG_DATA)
-RDM_1 <- 1 - cor(subject1, subject1)
-RDM_2 <- 1 - cor(subject2, subject2)
-RDM_3 <- 1 - cor(subject3, subject3)
-RDM_4 <- 1 - cor(subject4, subject4)
-RDM_5 <- 1 - cor(subject5, subject5)
-RDM_6 <- 1 - cor(subject6, subject6)
-RDM_7 <- 1 - cor(subject7, subject7)
-RDM_8 <- 1 - cor(subject8, subject8)
-RDM_9 <- 1 - cor(subject9, subject9)
-RDM_10 <- 1 - cor(subject10, subject10)
-RDM_11 <- 1 - cor(subject11, subject11)
-RDM_12 <- 1 - cor(subject12, subject12)
+RDM_orig <- 1 - cor(t(COG_DATA), t(COG_DATA))
+RDM_1 <- 1 - cor(t(subject1), t(subject1))
+RDM_2 <- 1 - cor(t(subject2), t(subject2))
+RDM_3 <- 1 - cor(t(subject3), t(subject3))
+RDM_4 <- 1 - cor(t(subject4), t(subject4))
+RDM_5 <- 1 - cor(t(subject5), t(subject5))
+RDM_6 <- 1 - cor(t(subject6), t(subject6))
+RDM_7 <- 1 - cor(t(subject7), t(subject7))
+RDM_8 <- 1 - cor(t(subject8), t(subject8))
+RDM_9 <- 1 - cor(t(subject9), t(subject9))
+RDM_10 <- 1 - cor(t(subject10), t(subject10))
+RDM_11 <- 1 - cor(t(subject11), t(subject11))
+RDM_12 <- 1 - cor(t(subject12), t(subject12))
 
 #image plot function: http://www.phaget4.org/R/image_matrix.html
 myImagePlot <- function(x, ...){
@@ -110,7 +110,6 @@ myImagePlot <- function(x, ...){
   
   layout(1)
 }
-
 #Distances
 myImagePlot(RDM_1,  title=c("RDM of subject1"))
 myImagePlot(RDM_orig,  title=c("RDM of original data"))
