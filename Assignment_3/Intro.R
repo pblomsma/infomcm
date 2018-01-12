@@ -121,3 +121,15 @@ rdm_avg <- (RDM_1 + RDM_2 + RDM_3 + RDM_4 +
 
 myImagePlot(rdm_avg,  title=c("RDM of average data"))
 
+# RDM animacy
+RDM_animacy <-  matrix(nrow=92,ncol=92) 
+for (i in 1:92) {
+  for (j in 1:92) {
+    if(CategoryVectors$V1[i]==CategoryVectors$V1[j]){
+      RDM_animacy[i,j] <- 1
+    }else{
+      RDM_animacy[i,j] <- 0
+    }
+  }
+}
+myImagePlot(RDM_animacy,  title=c("RDM of animacy state"))
