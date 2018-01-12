@@ -114,3 +114,10 @@ myImagePlot <- function(x, ...){
 #Distances
 myImagePlot(RDM_1,  title=c("RDM of subject1"))
 myImagePlot(RDM_orig,  title=c("RDM of original data"))
+
+#Mean matrix
+rdm_avg <- (RDM_1 + RDM_2 + RDM_3 + RDM_4 + 
+              RDM_5 + RDM_6 + RDM_7 + RDM_8 + RDM_9 + RDM_10 + RDM_11 + RDM_12) / 12
+
+myImagePlot(rdm_avg,  title=c("RDM of average data"))
+
