@@ -120,7 +120,7 @@ rdm_avg <- (RDM_1 + RDM_2 + RDM_3 + RDM_4 +
 
 myImagePlot(rdm_avg,  title=c("RDM of average data"))
 
-# RDM animacy
+# RDM animacy dissimilarity matrix predicted by our hypothesis 
 RDM_animacy <-  matrix(nrow=92,ncol=92) 
 for (i in 1:92) {
   for (j in 1:92) {
@@ -132,3 +132,52 @@ for (i in 1:92) {
   }
 }
 myImagePlot(RDM_animacy,  title=c("RDM of animacy state"))
+
+#FUNCTION: Hypothesis testing
+hypothesistesting <- function(measured_matrix, hypothesis_matrix)  
+{
+  hypothesis_matrix <- RDM_animacy
+  measured_matrix <- rdm_avg
+
+  #Check
+  if(ncol(measured_matrix) != ncol(hypothesis_matrix) )
+  {
+    print("Matrices have different size!")
+  }
+  
+  #Check
+  if(nrow(measured_matrix) != nrow(hypothesis_matrix) )
+  {
+    print("Matrices have different size!")
+  }
+  
+  results_0 =list() 
+  results_1 =list() 
+  
+  for(i in 1:nrow(measured_matrix))
+  {
+    for(j in 1:i)
+    {
+      if(j == i)
+      {
+        next
+      }
+      if(hypothesis_matrix[i,j]<1)
+      {
+        results_0 <- c(results_0, measured_matrix[i,j])
+      }
+      else
+      {
+        results_1 <- c(results_1, measured_matrix[i,j])
+      }
+    }
+  }
+  mean_0 <- mean(results_0)
+  mean_1 <- mean(results_1)
+  
+}
+
+hypothesistesting(RDM_animacy, rdm_avg)
+
+  
+
