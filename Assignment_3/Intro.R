@@ -268,6 +268,7 @@ anova(linearmodel)
 summary(linearmodel)
 
 #Question 11
+#Question 11
 NeuroRDM = read.table("C:\\Projects\\COG\\git\\Assignment_3\\Input\\RSA lab assignment\\NeuroRDM", quote="\"", comment.char = "") 
 createvector <- function(data){
   datalower <-lower.tri(data,diag = FALSE)
@@ -287,8 +288,38 @@ NeuroRDMvector <- createvector(NeuroRDM)
 cor.test(rdm_avgvector,NeuroRDMvector)
 plot(rdm_avgvector, NeuroRDMvector, main="Scatterplot AVG vs NeuroRDM", 
      xlab="Car Weight ", ylab="Miles Per Gallon ", pch=19)
-#Question 12 
+#Question 12
+# RDM animate
+RDM_animate <-  matrix(nrow=92,ncol=92) 
+for (i in 1:92) {
+  for (j in 1:92) {
+    if(CategoryVectors$V1[i]==CategoryVectors$V1[j]&CategoryVectors$V1[i]==1){
+      RDM_animate[i,j] <- rdm_avg[i,j]
+    }
+  }
+}
 
+RDM_animatevector <- createvector(RDM_animate)
+cor.test(RDM_animatevector,NeuroRDMvector)
+plot(RDM_animatevector, NeuroRDMvector, main="Scatterplot AVG vs NeuroRDM only animate", 
+     xlab="Car Weight ", ylab="Miles Per Gallon ", pch=19)
+#Question 13
+# RDM inanimate
+RDM_inanimate <-  matrix(nrow=92,ncol=92) 
+for (i in 1:92) {
+  for (j in 1:92) {
+    if(CategoryVectors$V1[i]==CategoryVectors$V1[j]&CategoryVectors$V1[i]==0){
+      RDM_inanimate[i,j] <- rdm_avg[i,j]
+    }
+  }
+}
+
+RDM_inanimatevector <- createvector(RDM_inanimate)
+cor.test(RDM_inanimatevector,NeuroRDMvector)
+plot(RDM_inanimatevector, NeuroRDMvector, main="Scatterplot AVG vs NeuroRDM only inanimate", 
+     xlab="Car Weight ", ylab="Miles Per Gallon ", pch=19)
+
+#Question 14
 
 
 #Question 15
