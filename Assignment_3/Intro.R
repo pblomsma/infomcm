@@ -267,9 +267,6 @@ linearmodel <- glm(diss ~ a + af, data = inputframe)
 anova(linearmodel)
 summary(linearmodel)
 
-#Question 10:
-
-
 #Question 11
 NeuroRDM = read.table("C:\\Projects\\COG\\git\\Assignment_3\\Input\\RSA lab assignment\\NeuroRDM", quote="\"", comment.char = "") 
 createvector <- function(data){
@@ -291,3 +288,24 @@ cor.test(rdm_avgvector,NeuroRDMvector)
 plot(rdm_avgvector, NeuroRDMvector, main="Scatterplot AVG vs NeuroRDM", 
      xlab="Car Weight ", ylab="Miles Per Gallon ", pch=19)
 #Question 12 
+
+
+
+#Question 15
+HmaxRDM = read.table("C:\\Projects\\COG\\git\\Assignment_3\\Input\\RSA lab assignment\\HmaxRDM", quote="\"", comment.char = "") 
+
+##How well does the HMAX RDM correlate to our 'average subject' RDM?
+cor.test(as.vector(rdm_avg), as.vector(as.matrix(HmaxRDM)))
+
+##Only look at animated objects
+inputframe <- data.frame(hmax =  as.vector(as.matrix(HmaxRDM)), avg = as.vector(rdm_avg), animacy = as.factor(as.vector(RDM_animacy)), human = as.factor(as.vector(RDM_human)))
+inputframe_animacy <- inputframe[inputframe$animacy == 1,]
+cor.test(inputframe_animacy$hmax, inputframe_animacy$avg)
+
+##Only look at non-animated objects
+inputframe_nonanimacy <- inputframe[inputframe$animacy == 0,]
+cor.test(inputframe_nonanimacy$hmax, inputframe_nonanimacy$avg)
+
+##Only look at human objects
+inputframe_human <- inputframe[inputframe$human == 1,]
+cor.test(inputframe_human$hmax, inputframe_human$avg)
