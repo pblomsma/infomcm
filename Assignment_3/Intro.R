@@ -172,27 +172,11 @@ hypothesistesting <- function(measured_matrix, hypothesis_matrix)
       }
     }
   }
-  mean_0 <- mean(unlist(results_0))
-  mean_1 <- mean(unlist(results_1))
+
   # calculate ssquared
-  total_0 <- 0
-  total_1 <- 0
-  s1 <- 0
-  s2 <- 0
-  for(i in 1:length(unlist(results_0))) {
-    s1  = (unlist(results_0[i])-mean_0)^2
-    total_0 = total_0 + s1
-  }
-  for (j in 1:length(unlist(results_1))) {
-    s2  = (unlist(results_1[j])-mean_1)^2
-    total_1 = total_1 + s2
-  }
-  s_squared <- (total_0+total_1)/(length(results_0)+length(results_1)-2)
-  t_static <- (mean_0 + mean_1)/ sqrt(s_squared*((1/length(unlist(results_0)))+(1/length(unlist(results_1)))))
-  return(t_static)
+  t.test(unlist(results_0),unlist(results_1),paired=FALSE)
+  
 }
-
 hypothesistesting(RDM_animacy, rdm_avg)
-
   
 
