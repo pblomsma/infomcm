@@ -132,6 +132,19 @@ for (i in 1:92) {
   }
 }
 myImagePlot(RDM_animacy,  title=c("RDM of animacy state"))
+#RDM no face and face
+RDM_face <-  matrix(nrow=92,ncol=92) 
+for (i in 1:92) {
+  for (j in 1:92) {
+    if(CategoryVectors$V6[i]==CategoryVectors$V6[j]){
+      RDM_face[i,j] <- 1
+    }else{
+      RDM_face[i,j] <- 0
+    }
+  }
+}
+myImagePlot(RDM_face,  title=c("RDM of animacy state"))
+
 
 #FUNCTION: Hypothesis testing
 hypothesistesting <- function(measured_matrix, hypothesis_matrix)  
@@ -177,3 +190,4 @@ hypothesistesting <- function(measured_matrix, hypothesis_matrix)
 }
 hypothesistesting(rdm_avg,RDM_animacy)
 hypothesistesting(RDM_orig,RDM_animacy)
+hypothesistesting(RDM_orig,RDM_face)
