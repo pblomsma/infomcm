@@ -186,7 +186,6 @@ hypothesistesting <- function(measured_matrix, hypothesis_matrix)
 
   # calculate ssquared
   t.test(unlist(results_0),unlist(results_1),paired=FALSE)
-  
 }
 
 #Question 4
@@ -249,3 +248,16 @@ for (i in 1:92) {
 }
 
 hypothesistesting_2dim(RDM_orig,RDM_animacy, RDM_human)
+#Question 9
+# RDM animacy and faces 
+RDM_animacyface <-  matrix(nrow=92,ncol=92) 
+for (i in 1:92) {
+  for (j in 1:92) {
+    if(CategoryVectors$V1[i]==CategoryVectors$V1[j]&CategoryVectors$V1[i]==1&CategoryVectors$V6[i]==CategoryVectors$V6[j]){
+      RDM_animacyface[i,j] <- 1
+    }else{
+      RDM_animacyface[i,j] <- 0
+    }
+  }
+}
+myImagePlot(RDM_animacyface,  title=c("RDM of animacy and face state"))
