@@ -136,9 +136,7 @@ myImagePlot(RDM_animacy,  title=c("RDM of animacy state"))
 #FUNCTION: Hypothesis testing
 hypothesistesting <- function(measured_matrix, hypothesis_matrix)  
 {
-  hypothesis_matrix <- RDM_animacy
-  measured_matrix <- rdm_avg
-
+  
   #Check
   if(ncol(measured_matrix) != ncol(hypothesis_matrix) )
   {
@@ -177,6 +175,5 @@ hypothesistesting <- function(measured_matrix, hypothesis_matrix)
   t.test(unlist(results_0),unlist(results_1),paired=FALSE)
   
 }
-hypothesistesting(RDM_animacy, rdm_avg)
-  
-
+hypothesistesting(rdm_avg,RDM_animacy)
+hypothesistesting(RDM_orig,RDM_animacy)
