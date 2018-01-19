@@ -188,6 +188,49 @@ hypothesistesting <- function(measured_matrix, hypothesis_matrix)
   t.test(unlist(results_0),unlist(results_1),paired=FALSE)
   
 }
+
+#Question 4
 hypothesistesting(rdm_avg,RDM_animacy)
+
+#Question 5
 hypothesistesting(RDM_orig,RDM_animacy)
+
+#Question 6
 hypothesistesting(RDM_orig,RDM_face)
+
+#Question 7
+
+#Approach1:
+#FUNCTION: Hypothesis testing
+hypothesistesting_2dim <- function(measured_matrix, hypothesis_matrix1, hypothesis_matrix2)  
+{
+  results_0 =list() 
+  results_1 =list() 
+  
+  for(i in 1:nrow(measured_matrix))
+  {
+    for(j in 1:i)
+    {
+      if(j == i)
+      {
+        next
+      }
+      if(hypothesis_matrix1[i,j]>0)
+      {
+        if(hypothesis_matrix2[i,j]<1)
+        {
+          results_0 <- c(results_0, measured_matrix[i,j])
+        }
+        else
+        {
+          results_1 <- c(results_1, measured_matrix[i,j])
+        }
+      }
+    }
+  }
+  
+  # calculate ssquared
+  t.test(unlist(results_0),unlist(results_1),paired=FALSE)
+}
+
+hypothesistesting_2dim(RDM_orig,RDM_animacy, RDM_face)
