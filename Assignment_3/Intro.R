@@ -234,3 +234,18 @@ hypothesistesting_2dim <- function(measured_matrix, hypothesis_matrix1, hypothes
 }
 
 hypothesistesting_2dim(RDM_orig,RDM_animacy, RDM_face)
+
+#Question 8
+#RDM no face and face
+RDM_human <-  matrix(nrow=92,ncol=92) 
+for (i in 1:92) {
+  for (j in 1:92) {
+    if(CategoryVectors$V6[i]==CategoryVectors$V3[j]){
+      RDM_human[i,j] <- 1
+    }else{
+      RDM_human[i,j] <- 0
+    }
+  }
+}
+
+hypothesistesting_2dim(RDM_orig,RDM_animacy, RDM_human)
