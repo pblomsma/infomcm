@@ -270,3 +270,24 @@ summary(linearmodel)
 #Question 10:
 
 
+#Question 11
+NeuroRDM = read.table("C:\\Projects\\COG\\git\\Assignment_3\\Input\\RSA lab assignment\\NeuroRDM", quote="\"", comment.char = "") 
+createvector <- function(data){
+  datalower <-lower.tri(data,diag = FALSE)
+  datavector <- c()
+  for (i in 1:92) {
+    for (j in 1:92) {
+      if(datalower[i,j]){
+        #datavector[j] <- data[i,j]
+        datavector = c(datavector,data[i,j])
+      }
+    }
+  }
+  return(datavector)
+}
+rdm_avgvector <- createvector(rdm_avg)
+NeuroRDMvector <- createvector(NeuroRDM)
+cor.test(rdm_avgvector,NeuroRDMvector)
+plot(rdm_avgvector, NeuroRDMvector, main="Scatterplot AVG vs NeuroRDM", 
+     xlab="Car Weight ", ylab="Miles Per Gallon ", pch=19)
+#Question 12 
