@@ -261,3 +261,12 @@ for (i in 1:92) {
   }
 }
 myImagePlot(RDM_animacyface,  title=c("RDM of animacy and face state"))
+
+inputframe <- data.frame(diss = as.vector(RDM_orig), a = as.factor(as.vector(RDM_animacy)), af = as.factor(as.vector(RDM_animacyface)))
+linearmodel <- glm(diss ~ a + af, data = inputframe)
+anova(linearmodel)
+summary(linearmodel)
+
+#Question 10:
+
+
