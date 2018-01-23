@@ -320,7 +320,11 @@ plot(RDM_inanimatevector, NeuroRDMvector, main="Scatterplot AVG vs NeuroRDM only
      xlab="Car Weight ", ylab="Miles Per Gallon ", pch=19)
 
 #Question 14
-
+BehaviourRDM = read.table("C:\\Projects\\COG\\git\\Assignment_3\\Input\\RSA lab assignment\\BehaviourRDM", quote="\"", comment.char = "") 
+BehaviourRDMvector <- createvector(BehaviourRDM)
+cor.test(BehaviourRDMvector,rdm_avgvector)
+cor.test(BehaviourRDMvector,RDM_inanimatevector)
+cor.test(BehaviourRDMvector,RDM_animatevector)
 
 #Question 15
 HmaxRDM = read.table("C:\\Projects\\COG\\git\\Assignment_3\\Input\\RSA lab assignment\\HmaxRDM", quote="\"", comment.char = "") 
